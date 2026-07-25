@@ -15,12 +15,12 @@
 <meta property="og:site_name" content="DTF.">
 <meta property="og:title" content="DTF. — Ahora mismo está cerrado. Por eso funciona.">
 <meta property="og:description" content="Solo abre unas horas, sin horario, sin patrón, sin avisar. Cuando abre, todo el mundo está dentro a la vez.">
+<meta property="og:url" content="https://dtf.app/">
 <meta property="og:locale" content="es_ES">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin>
 
 <script>
   /* Antes del primer pintado: evita el flash de la puerta de edad
@@ -38,6 +38,20 @@
    Plano, arquitectónico, cero border-radius, reglas de 2px,
    todo alineado a la izquierda, fotografía siempre en B/N.
    ============================================================ */
+
+/* --- 0. Fuente autoalojada -------------------------------
+   Archivo variable (OFL), subconjunto latino. Sin peticiones
+   a terceros: ni cesión de IPs que declarar ni CLS de fuente.
+   --------------------------------------------------------- */
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url("/fonts/archivo-latin-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 /* --- 1. Tokens ------------------------------------------- */
 :root {
@@ -672,7 +686,7 @@ img { display: block; max-width: 100%; }
       <button type="button" class="btn btn--ink btn--block" id="gate-accept">Sí, tengo 18 o más</button>
       <button type="button" class="btn btn--ghost-light btn--block" id="gate-reject">No — sácame de aquí</button>
       <p class="gate__legal">
-        Al entrar aceptas las <a href="#normas">normas de la casa</a> y la política de privacidad.
+        Al entrar aceptas las <a href="#normas">normas de la casa</a> y la <a href="/privacidad/">política de privacidad</a>.
         Sin pantallazos: la discreción es mutua.
       </p>
     </div>
@@ -1016,7 +1030,7 @@ img { display: block; max-width: 100%; }
       </form>
       <p class="waitlist__error" id="waitlist-error" role="alert" hidden></p>
 
-      <div class="waitlist__success" id="waitlist-success" role="status" hidden>
+      <div class="waitlist__success" id="waitlist-success" role="status" tabindex="-1" hidden>
         <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff9783" stroke-width="3" aria-hidden="true">
           <polyline points="4 13 9 18 20 6"/>
         </svg>
@@ -1036,8 +1050,8 @@ img { display: block; max-width: 100%; }
   <div class="container footer__inner">
     <span class="logo footer__logo">DTF<span class="dot">.</span></span>
     <div class="footer__links">
-      <a href="/privacidad">Privacidad</a>
-      <a href="/condiciones">Condiciones</a>
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/condiciones/">Condiciones</a>
       <a href="#normas">Consentimiento</a>
       <span class="footer__legal">Solo mayores de 18 años</span>
     </div>

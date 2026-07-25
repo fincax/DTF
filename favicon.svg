@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Construccion de marca: cuadrado rojo, "DTF" en Archivo 800 / stretch 125%,
+       alineado abajo-izquierda (misma pauta que .notice__icon). Texto en trazados
+       para no depender de la fuente en contexto de favicon. -->
+  <rect width="100" height="100" fill="#ec3013"/>
+  <g fill="#f3f2f2" transform="translate(11 0)">
+    <path transform="translate(0.00 89) scale(.03 -.03)" d="M84.5 0.0V687.5H469.0Q596.1 687.5 687.9 647.8Q779.8 608.0 829.1 531.2Q878.4 454.5 878.4 343.5Q878.4 233.1 829.1 156.3Q779.8 79.5 687.9 39.8Q596.1 0.0 469.0 0.0ZM288.1 150.9H457.2Q504.6 150.9 543.2 163.4Q581.8 175.8 610.1 199.2Q638.3 222.5 653.5 256.1Q668.7 289.7 668.7 332.5V356.1Q668.7 398.9 653.5 432.3Q638.3 465.6 610.1 488.9Q581.8 512.3 543.2 524.4Q504.6 536.6 457.2 536.6H288.1Z"/>
+    <path transform="translate(27.99 89) scale(.03 -.03)" d="M322.3 0.0V523.7H24.4V687.5H823.9V523.7H525.9V0.0Z"/>
+    <path transform="translate(53.43 89) scale(.03 -.03)" d="M84.5 0.0V687.5H761.3V536.6H288.1V397.8H709.0V246.9H288.1V0.0Z"/>
+  </g>
+</svg>
