@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DTF. — Abierto cuando toca</title>
+
+<meta name="description" content="DTF. solo abre unas horas, sin horario y sin avisar. App de citas 18+ para España. Apúntate y te avisamos cuando abra la ventana.">
+<meta name="theme-color" content="#f3f2f2">
+<meta name="rating" content="adult">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://dtf.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DTF.">
+<meta property="og:title" content="DTF. — Ahora mismo está cerrado. Por eso funciona.">
+<meta property="og:description" content="Solo abre unas horas, sin horario, sin patrón, sin avisar. Cuando abre, todo el mundo está dentro a la vez.">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+
+<script>
+  /* Antes del primer pintado: evita el flash de la puerta de edad
+     y marca que hay JS. Sin JS la puerta se queda visible (fail-closed). */
+  (function () {
+    var r = document.documentElement;
+    r.classList.remove('no-js');
+    try { if (localStorage.getItem('dtf-gate-ok')) r.classList.add('gate-ok'); } catch (e) {}
+  })();
+</script>
+
+<style>
+/* ============================================================
+   DTF. — Sistema "Modernist"
+   Plano, arquitectónico, cero border-radius, reglas de 2px,
+   todo alineado a la izquierda, fotografía siempre en B/N.
+   ============================================================ */
+
+/* --- 1. Tokens ------------------------------------------- */
+:root {
+  /* Superficies */
+  --bg:            #f3f2f2;
+  --surface:       #eae9e9;
+  --surface-alt:   #f8f4f4;
+
+  /* Tinta */
+  --ink:           #201e1d;
+  --ink-2:         #444141;
+  --ink-3:         #605d5d;
+  --meta:          #9b9797;
+
+  /* Acento */
+  --accent:        #ec3013;
+  --accent-hover:  #dd2b0f;
+  --accent-press:  #ae1800;   /* también: texto rojo accesible AA */
+  --accent-dark:   #ff563c;   /* acento sobre fondo oscuro */
+  --detail-dark:   #ff9783;
+
+  /* Neutros de interacción */
+  --border-soft:   #d7d3d3;
+  --hover-neutral: #eae7e7;
+  --hover-ink:     #2d2b2b;
+
+  /* Estructura */
+  --rule:          2px solid var(--ink);
+  --rule-w:        2px;
+  --container:     1200px;
+  --gutter:        32px;
+
+  /* Tipografía */
+  --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-h1:      clamp(40px, 6.4vw, 68px);
+  --fs-h2:      clamp(32px, 4vw, 44px);
+  --fs-h3:      clamp(28px, 3vw, 32px);
+  --fs-display: clamp(72px, 11vw, 120px);
+  --fs-closing: clamp(38px, 5.8vw, 64px);
+  --fs-gate:    clamp(36px, 8.5vw, 56px);
+}
+
+/* --- 2. Base --------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, figure { margin: 0; }
+
+a { color: var(--accent-press); text-decoration: none; }
+a:hover { color: var(--accent); }
+
+img { display: block; max-width: 100%; }
+
+/* Foco de teclado: única señal de foco, nunca se elimina */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.on-dark :focus-visible,
+.gate :focus-visible,
+.closing :focus-visible {
+  outline-color: var(--bg);
+}
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.skip {
+  position: absolute; left: -9999px;
+  background: var(--ink); color: var(--bg);
+  padding: 12px 18px; font-weight: 600; z-index: 200;
+}
+.skip:focus { left: 0; top: 0; color: var(--bg); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --- 3. Tipografía del sistema --------------------------- */
+.logo {
+  font-weight: 800;
+  font-stretch: 125%;
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+.logo .dot { color: var(--accent); }
+
+.kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--meta);
+}
+.kicker--red { color: var(--accent-press); }
+
+.meta-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--meta);
+}
+
+.h1 { font-weight: 800; font-size: var(--fs-h1); line-height: 1.02; letter-spacing: -.015em; text-wrap: pretty; }
+.h2 { font-weight: 800; font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -.01em; text-wrap: pretty; }
+.h3 { font-weight: 800; font-size: var(--fs-h3); line-height: 1.1;  text-wrap: pretty; }
+
+.lead  { font-size: 19px; line-height: 1.6; color: var(--ink-2); max-width: 560px; text-wrap: pretty; }
+.body  { font-size: 15px; line-height: 1.6; color: var(--ink-3); }
+.note  { font-size: 15px; line-height: 1.5; color: var(--ink-3); max-width: 300px; }
+
+/* --- 4. Botones ------------------------------------------ */
+/* Alineados a la izquierda incluso a todo lo ancho. Sin radius. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 58px;
+  padding: 0 22px;
+  border: var(--rule-w) solid transparent;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .12s linear, color .12s linear;
+}
+.btn--primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
+.btn--primary:active { background: var(--accent-press); border-color: var(--accent-press); }
+
+.btn--secondary { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn--secondary:hover { background: var(--hover-neutral); color: var(--ink); }
+.btn--secondary:active { background: var(--border-soft); }
+
+.btn--ink { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.btn--ink:hover { background: var(--hover-ink); border-color: var(--hover-ink); color: var(--bg); }
+.btn--ink:active { background: var(--ink-2); border-color: var(--ink-2); }
+
+.btn--ghost-light { background: transparent; border-color: var(--bg); color: var(--bg); }
+.btn--ghost-light:hover { background: rgba(243,242,242,.12); color: var(--bg); }
+.btn--ghost-light:active { background: rgba(243,242,242,.22); }
+
+.btn--sm { height: 42px; padding: 0 18px; font-size: 14px; }
+.btn--block { display: flex; width: 100%; }
+
+.icon { flex: none; }
+
+/* --- 5. Puerta de edad ----------------------------------- */
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--accent);
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+:root.gate-ok .gate { display: none; }
+
+.gate__inner {
+  width: 100%;
+  max-width: 560px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 40px var(--gutter);
+}
+.gate__logo { font-size: 32px; color: var(--bg); }
+.gate__logo .dot { color: var(--ink); }
+.gate__center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: 32px 0;
+}
+.gate__title { font-weight: 800; font-size: var(--fs-gate); line-height: 1.02; letter-spacing: -.01em; color: var(--bg); text-wrap: pretty; }
+.gate__sub   { font-weight: 600; font-size: 22px; color: var(--ink); }
+.gate__actions { display: flex; flex-direction: column; gap: 12px; }
+.gate__legal { font-size: 12.5px; line-height: 1.5; color: var(--ink); margin-top: 6px; }
+.gate__legal a { color: var(--ink); font-weight: 600; }
+.gate__legal a:hover { color: var(--ink); text-decoration: underline; }
+
+/* --- 6. Franja de estado --------------------------------- */
+.status { border-bottom: var(--rule); }
+.status[hidden] { display: none; }
+.status__inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-block: 11px;
+}
+.status__label {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .14em;
+  color: var(--bg);
+}
+.status__dot {
+  width: 10px; height: 10px;
+  flex: none;
+  animation: dtfpulse 2.4s infinite;
+}
+.status--closed { background: var(--ink); }
+.status--closed .status__dot { background: var(--accent-dark); }
+.status--open { background: var(--accent); }
+.status--open .status__dot { background: var(--bg); animation-duration: 1.2s; }
+
+@keyframes dtfpulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+/* --- 7. Header ------------------------------------------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: var(--rule);
+}
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 16px;
+}
+.header__logo { font-size: 26px; color: var(--ink); }
+.header__logo:hover { color: var(--ink); }
+
+.nav { display: flex; align-items: center; gap: 28px; }
+.nav__link { font-weight: 600; font-size: 14px; color: var(--ink); }
+.nav__link:hover { color: var(--accent); }
+
+.nav-toggle { display: none; }
+
+/* --- 8. Hero --------------------------------------------- */
+.section { border-bottom: var(--rule); }
+.section__body { padding: 64px var(--gutter) 72px; max-width: var(--container); margin: 0 auto; }
+
+.section__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+.hero__main {
+  padding: 88px 48px 88px 0;
+  border-right: var(--rule);
+  min-width: 0;
+}
+.hero__kicker { margin-bottom: 20px; }
+.hero__lead { margin: 24px 0 36px; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+.hero__aside {
+  display: flex;
+  align-items: flex-end;
+  padding: 48px 0 48px 48px;
+  min-width: 0;
+}
+.hero__wordmark { font-size: var(--fs-display); line-height: .95; }
+.hero__tagline {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: .34em;
+  margin-top: 16px;
+  color: var(--ink-3);
+}
+
+/* --- 9. Rejilla numerada (3 columnas) -------------------- */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); }
+.step { padding-right: 36px; }
+.step + .step { padding-left: 36px; }
+.step:last-child { padding-right: 0; }
+.step__num {
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--accent);
+  border-top: var(--rule);
+  padding-top: 18px;
+}
+.step__title { font-weight: 600; font-size: 20px; margin-top: 10px; }
+.step__text { margin-top: 8px; }
+
+/* --- 10. Especimen de notificación ----------------------- */
+.notice {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  border: var(--rule);
+  margin-top: 56px;
+}
+.notice__stage {
+  background: var(--surface);
+  padding: 44px 36px;
+  display: flex;
+  align-items: center;
+}
+.notice__card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--surface-alt);
+  border: var(--rule);
+  box-shadow: 6px 6px 0 var(--ink); /* única sombra de la página */
+}
+.notice__row { display: flex; gap: 14px; padding: 16px; align-items: flex-start; }
+.notice__icon {
+  width: 44px; height: 44px;
+  flex: none;
+  background: var(--accent);
+  display: flex;
+  align-items: flex-end;
+  padding: 5px;
+}
+.notice__icon span { font-weight: 800; font-stretch: 125%; font-size: 13px; line-height: 1; color: var(--bg); }
+.notice__meta { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.notice__app { font-weight: 800; font-size: 14px; }
+.notice__time { font-size: 11px; color: var(--meta); }
+.notice__text { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); margin-top: 3px; }
+.notice__copy {
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: var(--rule);
+  min-width: 0;
+}
+.notice__copy .kicker { margin-bottom: 14px; }
+.notice__copy p { font-size: 15px; line-height: 1.6; color: var(--ink-2); margin-top: 14px; max-width: 480px; text-wrap: pretty; }
+
+/* --- 11. Stats ------------------------------------------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+.stat { padding: 28px; }
+.stat:first-child { padding-left: 0; }
+.stat:last-child { padding-right: 0; }
+.stat + .stat { border-left: var(--rule); }
+.stat__figure { font-weight: 800; font-size: 40px; line-height: 1; }
+.stat__text { font-size: 14px; line-height: 1.5; color: var(--ink-3); margin-top: 8px; }
+
+/* --- 12. Rejilla de créditos ----------------------------- */
+.credits { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 64px; }
+.credit { padding: 20px 0 24px; border-top: var(--rule); }
+.credit__title { font-weight: 600; font-size: 18px; }
+.credit__text { font-size: 14.5px; line-height: 1.55; color: var(--ink-3); margin-top: 6px; }
+.credit .meta-label { display: block; margin-top: 12px; }
+
+/* --- 13. Estética (foto B/N) ----------------------------- */
+.aesthetic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+.aesthetic__media {
+  border-right: var(--rule);
+  min-width: 0;
+  height: 460px;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  filter: grayscale(1); /* la fotografía SIEMPRE en blanco y negro */
+}
+.aesthetic__media img { width: 100%; height: 100%; object-fit: cover; }
+.aesthetic__placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px; text-align: center;
+  font-size: 13px; color: var(--meta);
+  border: none;
+}
+.aesthetic__copy {
+  padding: 56px 0 56px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.aesthetic__copy .kicker { margin-bottom: 18px; }
+.aesthetic__copy .h3 { font-size: clamp(30px, 3.6vw, 40px); line-height: 1.08; letter-spacing: -.01em; }
+.aesthetic__copy p { font-size: 16px; line-height: 1.65; color: var(--ink-2); margin-top: 18px; max-width: 440px; text-wrap: pretty; }
+
+/* --- 14. Normas ------------------------------------------ */
+.rules { display: grid; grid-template-columns: 1fr 1fr; column-gap: 64px; }
+.rule-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: var(--rule);
+  align-items: baseline;
+}
+.rule-item__num { font-weight: 800; font-size: 18px; color: var(--accent); }
+.rule-item__title { font-weight: 600; font-size: 18px; }
+.rule-item__text { font-size: 14.5px; line-height: 1.55; color: var(--ink-3); margin-top: 4px; }
+.rule-item--note { align-items: center; font-size: 14px; color: var(--meta); }
+
+/* --- 15. FAQ --------------------------------------------- */
+.faq { display: grid; grid-template-columns: 4fr 8fr; }
+.faq__title { font-weight: 800; font-size: clamp(28px, 3.2vw, 36px); line-height: 1.1; }
+.faq__item { border-top: var(--rule); padding: 18px 0; }
+.faq__item:last-child { border-bottom: var(--rule); }
+.faq__q {
+  font-weight: 600;
+  font-size: 17px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q::after {
+  content: "+";
+  font-weight: 800;
+  color: var(--accent);
+  flex: none;
+}
+.faq__item[open] .faq__q::after { content: "–"; }
+.faq__a { font-size: 15px; line-height: 1.6; color: var(--ink-3); margin-top: 10px; max-width: 560px; }
+
+/* --- 16. Cierre rojo + lista de espera ------------------- */
+.closing { background: var(--accent); border-bottom: var(--rule); }
+.closing__inner { max-width: var(--container); margin: 0 auto; padding: 88px var(--gutter); }
+.closing__title {
+  font-weight: 800;
+  font-size: var(--fs-closing);
+  line-height: 1.02;
+  letter-spacing: -.015em;
+  color: var(--bg);
+  max-width: 820px;
+  text-wrap: pretty;
+}
+.waitlist { display: flex; gap: 0; margin-top: 40px; max-width: 640px; }
+.waitlist__input {
+  flex: 1;
+  min-width: 0;
+  height: 58px;
+  padding: 0 20px;
+  border: var(--rule);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px;
+}
+.waitlist__input::placeholder { color: var(--meta); }
+.waitlist .btn { flex: none; }
+.waitlist__success {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 40px;
+  border: var(--rule);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 18px 22px;
+  max-width: 640px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.waitlist__error {
+  margin-top: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  max-width: 640px;
+}
+.closing__micro { font-size: 13.5px; line-height: 1.6; color: var(--ink); margin-top: 18px; max-width: 640px; }
+[hidden] { display: none !important; }
+
+/* --- 17. Footer ------------------------------------------ */
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-block: 24px;
+}
+.footer__logo { font-size: 18px; }
+.footer__links { display: flex; flex-wrap: wrap; gap: 24px; }
+.footer__links a { font-size: 13px; color: var(--ink-3); }
+.footer__links a:hover { color: var(--accent); }
+.footer__legal { font-size: 13px; color: var(--meta); }
+
+/* --- 18. Responsive --------------------------------------
+   Los grids colapsan a 1 columna manteniendo las reglas de
+   2px, que pasan de verticales a horizontales.
+   --------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero__main { padding: 64px 0 48px; border-right: 0; border-bottom: var(--rule); }
+  .hero__aside { padding: 40px 0 56px; }
+
+  .notice { grid-template-columns: 1fr; }
+  .notice__copy { border-left: 0; border-top: var(--rule); padding: 36px 28px; }
+  .notice__stage { padding: 40px 28px; }
+
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat { padding: 24px; }
+  .stat:nth-child(odd) { padding-left: 0; }
+  .stat:nth-child(even) { padding-right: 0; }
+  .stat + .stat { border-left: 0; }
+  .stat:nth-child(even) { border-left: var(--rule); }
+  .stat:nth-child(n+3) { border-top: var(--rule); }
+
+  .credits { grid-template-columns: 1fr 1fr; column-gap: 40px; }
+  .faq { grid-template-columns: 1fr; gap: 32px; }
+
+  .aesthetic { grid-template-columns: 1fr; }
+  .aesthetic__media { border-right: 0; border-bottom: var(--rule); height: 380px; }
+  .aesthetic__copy { padding: 48px 0; }
+}
+
+@media (max-width: 760px) {
+  :root { --gutter: 20px; }
+
+  .nav__link, .nav .btn { display: none; }
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    background: transparent;
+    border: var(--rule);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .header.is-open .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--bg);
+    border-bottom: var(--rule);
+    padding: 8px var(--gutter) 20px;
+  }
+  .header.is-open .nav__link {
+    display: block;
+    padding: 16px 0;
+    border-top: var(--rule);
+    font-size: 17px;
+  }
+  .header.is-open .nav .btn { display: flex; margin-top: 16px; height: 52px; }
+  .header.is-open .nav-toggle { position: absolute; right: var(--gutter); top: -58px; }
+  .header { position: sticky; }
+  .header__inner { position: relative; }
+
+  .steps, .credits, .rules { grid-template-columns: 1fr; }
+  .step, .step + .step { padding: 0 0 28px; }
+  .step:last-child { padding-bottom: 0; }
+  .stats { grid-template-columns: 1fr; }
+  .stat { padding: 22px 0; }
+  .stat + .stat { border-left: 0; border-top: var(--rule); }
+  .stat:nth-child(even) { border-left: 0; }
+
+  .section__head { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .note { max-width: none; }
+  .section__body { padding-block: 48px 56px; }
+
+  .waitlist { flex-direction: column; }
+  .waitlist .btn { width: 100%; justify-content: flex-start; border-top: 0; }
+  .closing__inner { padding-block: 64px; }
+  .hero__actions .btn { width: 100%; }
+  .aesthetic__media { height: 300px; }
+  .notice__card { box-shadow: 4px 4px 0 var(--ink); }
+}
+
+/* --- 19. Preferencias del usuario ------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+@media print { .gate, .header, .status { display: none !important; } }
+</style>
+</head>
+
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<!-- ============ 0. Puerta de edad ============ -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="gate__inner">
+    <div class="logo gate__logo">DTF<span class="dot">.</span></div>
+
+    <div class="gate__center">
+      <h1 class="gate__title" id="gate-title">Aquí dentro todos son mayores.</h1>
+      <p class="gate__sub">¿Tú también?</p>
+    </div>
+
+    <div class="gate__actions">
+      <button type="button" class="btn btn--ink btn--block" id="gate-accept">Sí, tengo 18 o más</button>
+      <button type="button" class="btn btn--ghost-light btn--block" id="gate-reject">No — sácame de aquí</button>
+      <p class="gate__legal">
+        Al entrar aceptas las <a href="#normas">normas de la casa</a> y la política de privacidad.
+        Sin pantallazos: la discreción es mutua.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 2. Header ============ -->
+<header class="header" id="header">
+  <div class="container header__inner">
+    <a href="#" class="logo header__logo" aria-label="DTF., inicio">DTF<span class="dot">.</span></a>
+
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú">
+      <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a class="nav__link" href="#que-es">Qué es</a>
+      <a class="nav__link" href="#como">Cómo funciona</a>
+      <a class="nav__link" href="#normas">Normas</a>
+      <a class="nav__link" href="#faq">FAQ</a>
+      <a class="btn btn--primary btn--sm" href="#unete">Crear cuenta</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ 1. Franja de estado ============ -->
+<div class="status status--closed" id="status-closed" role="status">
+  <div class="container status__inner">
+    <span class="status__dot" aria-hidden="true"></span>
+    <span class="status__label">CERRADO — LA PRÓXIMA VENTANA NO SE ANUNCIA</span>
+  </div>
+</div>
+
+<div class="status status--open" id="status-open" role="status" hidden>
+  <div class="container status__inner">
+    <span class="status__dot" aria-hidden="true"></span>
+    <span class="status__label">ABIERTO — LA VENTANA CIERRA EN <span id="countdown">00:00:00</span></span>
+  </div>
+</div>
+
+<main id="contenido">
+
+  <!-- ============ 3. Hero ============ -->
+  <section class="section" id="que-es">
+    <div class="hero">
+      <div class="hero__main">
+        <p class="kicker kicker--red hero__kicker">Donde Todos Follan</p>
+        <h1 class="h1">Ahora mismo está cerrado. Por eso funciona.</h1>
+        <p class="lead hero__lead">
+          DTF solo abre unas horas — sin horario, sin patrón, sin avisar.
+          Cuando abre, todo el mundo está dentro a la vez. Y lo que no se aprovecha, caduca.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#unete">
+            Avísame cuando abra
+            <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/>
+            </svg>
+          </a>
+          <a class="btn btn--secondary" href="#ventana">Cómo funciona la ventana</a>
+        </div>
+      </div>
+
+      <div class="hero__aside">
+        <div>
+          <p class="logo hero__wordmark">DTF<span class="dot">.</span></p>
+          <p class="hero__tagline">ABIERTO CUANDO TOCA</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. La Ventana ============ -->
+  <section class="section" id="ventana">
+    <div class="section__body">
+      <div class="section__head">
+        <div>
+          <p class="kicker kicker--red" style="margin-bottom:14px">La ventana</p>
+          <h2 class="h2">No abre cuando quieres. Abre cuando toca.</h2>
+        </div>
+        <p class="note">Otras apps abren un día fijo. Aquí ni eso: el calendario no lo conoce nadie.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <p class="step__num">01</p>
+          <h3 class="step__title">Abre sin avisar</h3>
+          <p class="body step__text">Ni jueves ni sábados: no hay patrón que aprenderse. Cuando abre, te llega el aviso. Sí, es a propósito.</p>
+        </div>
+        <div class="step">
+          <p class="step__num">02</p>
+          <h3 class="step__title">Todo el mundo a la vez</h3>
+          <p class="body step__text">Sin perfiles fantasma ni conversaciones de tres semanas: si está abierto, quien está, está ahora.</p>
+        </div>
+        <div class="step">
+          <p class="step__num">03</p>
+          <h3 class="step__title">Lo que no se usa, caduca</h3>
+          <p class="body step__text">Los matches mueren al cierre de la ventana. O propones un plan, o a la próxima. Nada se acumula.</p>
+        </div>
+      </div>
+
+      <!-- Especimen de notificación -->
+      <div class="notice">
+        <div class="notice__stage">
+          <figure class="notice__card">
+            <div class="notice__row">
+              <div class="notice__icon" aria-hidden="true"><span>DTF</span></div>
+              <div style="min-width:0">
+                <div class="notice__meta">
+                  <span class="notice__app">DTF.</span>
+                  <span class="notice__time">ahora</span>
+                </div>
+                <p class="notice__text">Acaba de abrir. Cierra a las 23:58 y no vuelve hasta que vuelva.</p>
+              </div>
+            </div>
+          </figure>
+        </div>
+        <div class="notice__copy">
+          <p class="kicker">El aviso</p>
+          <h3 class="h3">Una notificación por ventana. Ni una más.</h3>
+          <p>
+            Nada de «alguien ha mirado tu perfil» ni rachas que mantener.
+            En tu pantalla solo pone «DTF.» — discreto por fuera, como todo lo demás.
+            Si la ignoras, no pasa nada: pasará la ventana.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. Stats ============ -->
+  <section class="section" aria-label="Compromisos">
+    <div class="stats">
+      <div class="stat">
+        <p class="stat__figure">18+</p>
+        <p class="stat__text">Edad verificada al entrar. Sin excepciones, sin «casi».</p>
+      </div>
+      <div class="stat">
+        <p class="stat__figure">Sí</p>
+        <p class="stat__text">El consentimiento va primero, y se puede retirar en cualquier momento.</p>
+      </div>
+      <div class="stat">
+        <p class="stat__figure">0</p>
+        <p class="stat__text">Fotos explícitas en perfiles públicos. La sutileza también liga.</p>
+      </div>
+      <div class="stat">
+        <p class="stat__figure">0 €</p>
+        <p class="stat__text">Gratis, de momento. Cuando deje de serlo, avisaremos antes que la ventana.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. Cómo funciona ============ -->
+  <section class="section" id="como">
+    <div class="section__body">
+      <p class="kicker" style="margin-bottom:36px">Cómo funciona</p>
+      <div class="steps">
+        <div class="step">
+          <p class="step__num">01</p>
+          <h3 class="step__title">Di lo que buscas</h3>
+          <p class="body step__text">Con palabras, en tu perfil. Las indirectas, los acertijos y el «ya si eso» se quedan fuera.</p>
+        </div>
+        <div class="step">
+          <p class="step__num">02</p>
+          <h3 class="step__title">Match con quien busca lo mismo</h3>
+          <p class="body step__text">Nada de convencer a nadie. O coincidís, o cada uno a lo suyo. Ahorra semanas.</p>
+        </div>
+        <div class="step">
+          <p class="step__num">03</p>
+          <h3 class="step__title">Las normas van en serio</h3>
+          <p class="body step__text">Un no cierra la conversación. Insistir expulsa. Reportar es un gesto, y lo revisa gente de verdad.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. Lo mejor de cada casa ============ -->
+  <section class="section" aria-labelledby="dentro-title">
+    <div class="section__body">
+      <div class="section__head">
+        <div>
+          <p class="kicker" style="margin-bottom:14px">Dentro de la ventana</p>
+          <h2 class="h2" id="dentro-title">Lo mejor de cada casa, sin la casa.</h2>
+        </div>
+        <p class="note">Hemos copiado sin complejos lo que sí funciona en las apps nuevas. Lo decimos abiertamente: para eso están.</p>
+      </div>
+
+      <div class="credits">
+        <div class="credit">
+          <h3 class="credit__title">Perfil en vídeo, 30 segundos</h3>
+          <p class="credit__text">Lo que ves es lo que hay: voz, gesto y energía antes del match. Adiós al «no se parece a sus fotos».</p>
+          <span class="meta-label">Lo aprendimos de Snack</span>
+        </div>
+        <div class="credit">
+          <h3 class="credit__title">Afinidad que aprende</h3>
+          <p class="credit__text">El algoritmo aprende de lo que haces, no de lo que dices que te gusta. Y se puede borrar cuando quieras.</p>
+          <span class="meta-label">Lo aprendimos de Iris</span>
+        </div>
+        <div class="credit">
+          <h3 class="credit__title">Plan hecho al match</h3>
+          <p class="credit__text">Con cada match llega una propuesta concreta: sitio, día y hora. Aceptar cuesta un toque; el match caduca igual.</p>
+          <span class="meta-label">Lo aprendimos de Hinge</span>
+        </div>
+        <div class="credit">
+          <h3 class="credit__title">Entrada con criterio</h3>
+          <p class="credit__text">No entra quien paga: entra quien encaja. El sentido del humor puntúa más que el gimnasio.</p>
+          <span class="meta-label">Lo aprendimos de Lox Club</span>
+        </div>
+        <div class="credit">
+          <h3 class="credit__title">Tú decides quién eres</h3>
+          <p class="credit__text">Identidades y orientaciones de sobra, perfiles en pareja y modo incógnito para que no te encuentre tu cuñado.</p>
+          <span class="meta-label">Lo aprendimos de Feeld</span>
+        </div>
+        <div class="credit">
+          <h3 class="credit__title">La cita es un plan</h3>
+          <p class="credit__text">Para quien prefiere moverse a chatear: propón una actividad y que la conversación pase en persona.</p>
+          <span class="meta-label">Lo aprendimos de Field</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8. La estética ============ -->
+  <section class="section" aria-labelledby="estetica-title">
+    <div class="aesthetic">
+      <figure class="aesthetic__media">
+        <!-- Sustituir por <picture> real. La regla de marca: siempre grayscale(1).
+             <img src="/img/editorial-1200.avif" alt="" width="1200" height="920" loading="lazy" decoding="async"> -->
+        <div class="aesthetic__placeholder">Foto editorial — gente vestida, luz de bar, nada explícito</div>
+      </figure>
+      <div class="aesthetic__copy">
+        <p class="kicker">La estética</p>
+        <h2 class="h3" id="estetica-title">La discreción también es un estilo.</h2>
+        <p>
+          Fotografía en blanco y negro, cero neones, cero corazones.
+          El nombre ya dice todo lo que hay que decir; el resto de la marca se dedica a decirlo bien.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 9. Normas ============ -->
+  <section class="section" id="normas">
+    <div class="section__body">
+      <div class="section__head">
+        <div>
+          <p class="kicker kicker--red" style="margin-bottom:14px">Normas de la casa</p>
+          <h2 class="h2">Cinco normas. Ninguna negociable.</h2>
+        </div>
+        <p class="note" style="max-width:280px">Aceptarlas es la entrada. Saltarse una es la salida.</p>
+      </div>
+
+      <div class="rules">
+        <div class="rule-item">
+          <span class="rule-item__num">01</span>
+          <div>
+            <h3 class="rule-item__title">Solo sí es sí</h3>
+            <p class="rule-item__text">El silencio, el «bueno…» y el emoji ambiguo no cuentan. Y un sí se puede retirar cuando quieras.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-item__num">02</span>
+          <div>
+            <h3 class="rule-item__title">Un no no se negocia</h3>
+            <p class="rule-item__text">Insistir no es interés: es motivo de expulsión.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-item__num">03</span>
+          <div>
+            <h3 class="rule-item__title">Nada sin permiso</h3>
+            <p class="rule-item__text">Ni fotos de otras personas, ni compartir conversaciones, ni datos ajenos.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-item__num">04</span>
+          <div>
+            <h3 class="rule-item__title">Sin pantallazos</h3>
+            <p class="rule-item__text">La discreción es el trato: lo que pasa en DTF se queda en DTF.</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-item__num">05</span>
+          <div>
+            <h3 class="rule-item__title">Bloquea sin dar explicaciones</h3>
+            <p class="rule-item__text">No le debes cortesía a quien te incomoda. Reportar es gratis y anónimo.</p>
+          </div>
+        </div>
+        <div class="rule-item rule-item--note">
+          <span>Un equipo humano revisa cada reporte. De verdad humano.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10. FAQ ============ -->
+  <section class="section" id="faq">
+    <div class="section__body faq">
+      <div>
+        <p class="kicker" style="margin-bottom:14px">FAQ</p>
+        <h2 class="faq__title">Lo que todos preguntan</h2>
+      </div>
+
+      <div>
+        <details class="faq__item">
+          <summary class="faq__q">¿Cuándo abre la app?</summary>
+          <p class="faq__a">No se sabe, y no lo vamos a decir. La ventana abre sin horario, dura unas horas y se cierra. El aviso te llega en el momento; presentarte es cosa tuya.</p>
+        </details>
+        <details class="faq__item">
+          <summary class="faq__q">¿Esto es una app porno?</summary>
+          <p class="faq__a">No. Es una app de citas con el nombre más honesto del mercado. Nada de contenido explícito: gente adulta, intenciones claras y buenos modales.</p>
+        </details>
+        <details class="faq__item">
+          <summary class="faq__q">¿Cómo verificáis la edad?</summary>
+          <p class="faq__a">Verificación documental al crear la cuenta, una sola vez. El documento no se almacena; solo el resultado.</p>
+        </details>
+        <details class="faq__item">
+          <summary class="faq__q">¿Va a aparecer «Donde Todos Follan» en mi banco o en mi móvil?</summary>
+          <p class="faq__a">No. Fuera de la app somos «DTF.»: en el icono, en las notificaciones y en el extracto. El nombre completo se queda dentro.</p>
+        </details>
+        <details class="faq__item">
+          <summary class="faq__q">¿Y si alguien se pasa de la raya?</summary>
+          <p class="faq__a">Bloqueo inmediato, reporte anónimo y revisión humana. Las cinco normas no son decoración: se expulsa por incumplirlas.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 11. Cierre + lista de espera ============ -->
+  <section class="closing" id="unete">
+    <div class="closing__inner">
+      <h2 class="closing__title">Cuando abra, más te vale estar.</h2>
+
+      <form class="waitlist" id="waitlist" novalidate>
+        <label class="sr-only" for="email">Tu email</label>
+        <input class="waitlist__input" id="email" name="email" type="email" required
+               autocomplete="email" inputmode="email" placeholder="tu@email.com">
+        <button class="btn btn--ink" type="submit" id="waitlist-submit">Avísame cuando abra</button>
+      </form>
+      <p class="waitlist__error" id="waitlist-error" role="alert" hidden></p>
+
+      <div class="waitlist__success" id="waitlist-success" role="status" hidden>
+        <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff9783" stroke-width="3" aria-hidden="true">
+          <polyline points="4 13 9 18 20 6"/>
+        </svg>
+        <span>Dentro. La próxima vez que suene el aviso, ya sabes qué hacer.</span>
+      </div>
+
+      <p class="closing__micro">
+        Primero <strong>Madrid y Barcelona</strong>; el resto, cuando toque. Gratis mientras dure la beta.
+        Un solo aviso por ventana — tu email no se comparte ni se vende, ni sobrio ni borracho.
+      </p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ 12. Footer ============ -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="logo footer__logo">DTF<span class="dot">.</span></span>
+    <div class="footer__links">
+      <a href="/privacidad">Privacidad</a>
+      <a href="/condiciones">Condiciones</a>
+      <a href="#normas">Consentimiento</a>
+      <span class="footer__legal">Solo mayores de 18 años</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------------------------------------------------
+     Configuración. En producción esto lo dicta el backend:
+     GET /api/window -> { open: boolean, closesAt: ISO8601 }
+     --------------------------------------------------------- */
+  var CONFIG = {
+    windowOpen: false,             // feature flag / respuesta del backend
+    closesAt: null,                // p. ej. '2026-07-26T23:58:00+02:00'
+    waitlistEndpoint: '/api/waitlist',
+    exitUrl: 'https://www.google.com'
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* --- Puerta de edad ------------------------------------- */
+  var gate = $('gate');
+  var root = document.documentElement;
+  var gateOpen = !root.classList.contains('gate-ok');
+
+  if (gateOpen) {
+    document.body.style.overflow = 'hidden';
+    $('gate-accept').focus({ preventScroll: true });
+  }
+
+  $('gate-accept').addEventListener('click', function () {
+    try { localStorage.setItem('dtf-gate-ok', '1'); } catch (e) {}
+    root.classList.add('gate-ok');
+    document.body.style.overflow = '';
+    gate.remove();
+    gateOpen = false;
+  });
+
+  $('gate-reject').addEventListener('click', function () {
+    window.location.replace(CONFIG.exitUrl);
+  });
+
+  /* Atrapa el foco dentro de la puerta mientras esté montada */
+  document.addEventListener('keydown', function (e) {
+    if (!gateOpen || e.key !== 'Tab') return;
+    var f = gate.querySelectorAll('button, a[href]');
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  /* --- Franja de estado + cuenta atrás -------------------- */
+  var elClosed = $('status-closed');
+  var elOpen = $('status-open');
+  var elCount = $('countdown');
+  var timer = null;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function format(seconds) {
+    return pad(Math.floor(seconds / 3600)) + ':' +
+           pad(Math.floor(seconds / 60) % 60) + ':' +
+           pad(seconds % 60);
+  }
+
+  function renderWindow() {
+    var open = !!CONFIG.windowOpen;
+    elOpen.hidden = !open;
+    elClosed.hidden = open;
+
+    clearInterval(timer);
+    if (!open) return;
+
+    var end = CONFIG.closesAt ? new Date(CONFIG.closesAt).getTime() : Date.now() + 9912000;
+    var tick = function () {
+      var left = Math.max(0, Math.round((end - Date.now()) / 1000));
+      elCount.textContent = format(left);
+      if (left === 0) { clearInterval(timer); CONFIG.windowOpen = false; renderWindow(); }
+    };
+    tick();
+    timer = setInterval(tick, 1000);
+  }
+  renderWindow();
+
+  /* Deja el estado accesible desde consola / backend:
+     window.DTF.setWindow(true, '2026-07-26T23:58:00+02:00') */
+  window.DTF = {
+    setWindow: function (open, closesAt) {
+      CONFIG.windowOpen = open;
+      CONFIG.closesAt = closesAt || null;
+      renderWindow();
+    }
+  };
+
+  /* --- Menú móvil ---------------------------------------- */
+  var header = $('header'), toggle = $('nav-toggle');
+  toggle.addEventListener('click', function () {
+    var open = header.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  });
+  $('nav').addEventListener('click', function (e) {
+    if (e.target.closest('a')) {
+      header.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* --- Lista de espera ------------------------------------ */
+  var form = $('waitlist');
+  var input = $('email');
+  var submit = $('waitlist-submit');
+  var success = $('waitlist-success');
+  var error = $('waitlist-error');
+
+  function fail(msg) {
+    error.textContent = msg;
+    error.hidden = false;
+    input.setAttribute('aria-invalid', 'true');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    error.hidden = true;
+    input.removeAttribute('aria-invalid');
+
+    if (!input.checkValidity()) {
+      fail('Ese email no cuela. Revísalo y vuelve a intentarlo.');
+      input.focus();
+      return;
+    }
+
+    submit.disabled = true;
+    submit.textContent = 'Un momento…';
+
+    fetch(CONFIG.waitlistEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: input.value.trim() })
+    })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json().catch(function () { return {}; }); })
+      .then(function () {
+        form.hidden = true;
+        success.hidden = false;
+        success.focus && success.focus();
+      })
+      .catch(function () {
+        submit.disabled = false;
+        submit.textContent = 'Avísame cuando abra';
+        fail('No hemos podido apuntarte. Inténtalo otra vez en un minuto.');
+      });
+  });
+})();
+</script>
+</body>
+</html>
