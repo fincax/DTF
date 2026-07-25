@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — DTF.</title>
+<meta name="theme-color" content="#f3f2f2">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/legal.css">
+<style>
+  .doc { min-height: 55vh; }
+  .err { font-weight: 800; font-stretch: 125%; font-size: clamp(72px, 14vw, 140px); line-height: 1; }
+  .err .dot { color: var(--accent); }
+  .doc .lead { font-size: 19px; color: var(--ink-2); max-width: 460px; }
+  .back {
+    display: inline-flex; align-items: center; gap: 14px;
+    height: 58px; padding: 0 22px; margin-top: 32px;
+    background: var(--accent); color: #fff;
+    font-weight: 600; font-size: 16px; line-height: 1;
+  }
+  .back:hover { background: #dd2b0f; color: #fff; }
+</style>
+</head>
+
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="logo header__logo" aria-label="DTF., inicio">DTF<span class="dot">.</span></a>
+  </div>
+</header>
+
+<main id="contenido" class="container doc">
+  <p class="kicker">Error 404</p>
+  <h1 class="err">404<span class="dot">.</span></h1>
+  <p class="lead">
+    Esta página no existe. O caducó, como los matches:
+    lo que no se usa, desaparece.
+  </p>
+  <a class="back" href="/">Volver al principio</a>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="logo footer__logo">DTF<span class="dot">.</span></span>
+    <div class="footer__links">
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/condiciones/">Condiciones</a>
+      <span class="footer__legal">Solo mayores de 18 años</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
