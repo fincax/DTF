@@ -1,140 +1,72 @@
 # DTF. — Memoria del proyecto
 
-Web estática de pre-lanzamiento (lista de espera) de DTF, app de citas 18+
-para España. Sin build, sin dependencias: se publica la raíz del repo tal
-cual. Rama de trabajo: `claude/mejor-codigo-efd24j`.
+DTF es una app de citas 18+ para España cuya mecánica es **la ventana**:
+solo abre unas horas, sin horario ni patrón, y lo que no se aprovecha
+caduca. El repo tiene cuatro piezas, todas en la rama de trabajo
+`claude/design-missing-pages-7xro3k`:
 
-## Estado (sesión 2026-07-25)
+| Pieza | Qué es | Estado |
+| --- | --- | --- |
+| Raíz (`index.html`, `/privacidad/`…) | Web de pre-lanzamiento y páginas de cuenta. HTML a mano, sin build | Lista para desplegar |
+| `server/` | Backend del waitlist. Node **sin dependencias npm** (node:http + node:sqlite + fetch, Node ≥ 22.13) | Completo y verificado |
+| `server-app/` | Backend de la app. Node + Postgres + WebSockets (`pg`, `ws`) | Completo y verificado |
+| `app/` | App móvil. Expo SDK 57 + TS + expo-router | Onboarding y deck funcionando |
 
-Hecho y verificado en Chromium headless (puerta de edad, cuenta atrás,
-validación y éxito del waitlist, menú móvil, cero errores de consola):
+Documentos que mandan: **PRODUCTO.md** (qué se construye y por qué),
+**ARQUITECTURA.md** (web e infraestructura), `server-app/CONTRATO.md`
+(API de la app), y los README de `server/`, `server-app/` y `app/`.
 
-- `index.html` — landing del handoff + mejoras: fuente autoalojada,
-  favicon, `tabindex="-1"` en el éxito del waitlist, enlace a privacidad
-  desde la puerta de edad, `og:url`.
-- Archivo variable autoalojada en `/fonts` (subconjunto latino, ejes
-  wght 400–900 y wdth 62–125%, OFL incluida). No volver a Google Fonts.
-- `favicon.svg` — cuadrado rojo + "DTF" en trazados reales de Archivo
-  800/125% (generado con fontTools desde el woff2 del repo).
-- `/privacidad/` y `/condiciones/` — estructura RGPD/LOPDGDD completa;
-  los datos del responsable son huecos `[PENDIENTE]` marcados en rojo
-  (clase `.pending` en `assets/legal.css`): si se ven, no se lanza.
-- `404.html`, `robots.txt`, `sitemap.xml`, `README.md`.
+## Lo que hay hecho (a 2026-07-26)
 
-Añadido en sesión 2026-07-26 (rama `claude/design-missing-pages-7xro3k`),
-verificado en Chromium headless (estados, validación, sin scroll
-horizontal en móvil, cero errores de consola):
+**Web.** Landing del handoff, `/privacidad/` y `/condiciones/` con
+estructura RGPD (los datos del responsable siguen como `[PENDIENTE]` en
+rojo: si se ven, no se lanza), `404.html`, SEO básico, Archivo variable
+autoalojada en `/fonts` (nunca volver a Google Fonts) y `favicon.svg`
+con la marca en trazados reales. Páginas de cuenta `/entrar/`,
+`/panel/`, `/confirmar/` y `/baja/`: `noindex`, fuera del sitemap y **sin
+enlazar desde la landing hasta desplegar**. Lighthouse **100/100/100/100**
+verificado contra el servidor real.
 
-- Páginas de cuenta: `/entrar/` (enlace mágico), `/panel/` (estado en la
-  lista, preferencias de ciudad y avisos, descarga/borrado de datos),
-  `/confirmar/` (doble opt-in: ok/caducado) y `/baja/` (confirmación
-  explícita antes de borrar). Todas `noindex`, fuera del sitemap y sin
-  enlazar desde la landing hasta que exista el backend.
-- `assets/app.css` — estilos compartidos de esas páginas (tokens
-  duplicados; radios/checkboxes cuadrados del sistema, rejilla `.facts`).
-- Contratos de API comentados en el `<script>` de cada página
-  (`/api/session/link`, `/api/me`, `/api/waitlist/confirm`,
-  `/api/waitlist/unsubscribe`) y hooks `window.DTF.*` para revisar los
-  estados sin servidor (`setSession`, `setState`, `showSent`).
-- Decisión de arquitectura para la app (documentada en ARQUITECTURA.md):
-  el vídeo de perfil va en plataforma gestionada (Stream/api.video/Mux)
-  con subida directa firmada desde el cliente y revisión de contenido
-  previa a publicar. Nunca en servidor propio ni público sin moderar.
+**Waitlist (`server/`).** Sirve los estáticos con lista blanca y toda la
+API: alta con doble opt-in, baja con borrado real, enlace mágico +
+sesión con cookie, panel (`GET/PATCH /api/me`, export RGPD),
+`GET /api/window` (la landing lo consume al cargar) y `cli.js` (stats,
+abrir/cerrar ventana, aviso masivo). Sin `BREVO_API_KEY` arranca en modo
+log (`server/data/outbox.log`). 32 checks de API + E2E completo en
+Chromium. Decisiones del usuario: **VPS en clouding.io** y **Brevo**
+(ambos ya declarados como encargados en `/privacidad/`).
 
-Añadido en la misma sesión 2026-07-26: **backend del waitlist completo**
-en `server/` (decisiones del usuario: VPS clouding.io; Brevo como email,
-recomendación aceptada). Un proceso Node sin dependencias npm
-(node:http + node:sqlite + fetch, requiere Node ≥ 22.13) que sirve los
-estáticos con lista blanca y toda la API: alta con doble opt-in, baja
-con borrado real, enlace mágico + sesión con cookie, panel
-(GET/PATCH /api/me, export RGPD), `GET /api/window` (la landing ya lo
-consume) y `server/cli.js` (stats, abrir/cerrar ventana, aviso masivo).
-Modo log sin `BREVO_API_KEY` (emails a `server/data/outbox.log`).
-Verificado con 32 checks de API y un E2E completo en Chromium contra el
-servidor real (alta → confirmar → entrar → panel → preferencias →
-ventana por CLI → baja), cero errores de consola. En `/privacidad/` ya
-están declarados Brevo y Clouding como encargados.
+**Backend de la app (`server-app/`).** Acceso por enlace mágico con
+sesión Bearer, onboarding completo, webhook de la plataforma de vídeo
+con filtro automático, ventana/deck/like/match, plan con aceptación,
+chat por WebSocket, barrido de cierre, reportes, bloqueo, expulsión y
+RGPD. 47 checks de punta a punta contra Postgres real.
 
-Misma sesión: auditoría Lighthouse contra el servidor real y arreglos
-hasta **100/100/100/100** (emulación móvil; performance oscila 99–100
-por ruido de CPU, con TBT 0 y CLS 0). Cambios: `--meta` → #6b6767 (el
-gris antiguo daba 2,6:1), botones primarios sobre `--accent-btn`
-#dd2b0f (blanco sobre #ec3013 daba 4,2), texto pequeño sobre rojo en
-negro (puerta y cierre), `.rule-item__num` a 19px, gzip en el servidor,
-y un bug real: `flex: 1` (flex-basis 0) aplastaba a 21px el alto de los
-inputs de email en móvil (landing y /entrar/) — arreglado con
-`flex: none` en columna.
+**App (`app/`).** Puerta de edad (fail-closed), acceso por enlace
+mágico, onboarding de 5 pasos **en el orden que dicta `falta[]` del
+servidor**, deck real con like/pass, Perfil y Ajustes con datos reales.
+Iconos generados desde `favicon.svg`. Verificado en Chromium contra
+Postgres + backend reales, `tsc` limpio.
 
-Misma sesión: **PRODUCTO.md** — documento de producto del MVP de la
-app: restricciones de tienda como perímetro, mecánica exacta de la
-ventana (nacional, 18–21h → 23:58, matches mueren al cierre salvo plan
-aceptado +24h), recorte v1 (sin fotos en chat, sin pagos — beta
-gratis), verificación de edad en dos pasos (facial → documental,
-~0,3–0,5 €/usuario), pipeline de moderación de vídeo (automático +
-humano SIEMPRE antes de publicar), stack (React Native + Expo; Node +
-Postgres + WebSockets), métricas de la beta y decisiones abiertas del
-responsable. Las promesas de la landing se tratan como contrato.
+## Reglas que no se negocian
 
-Misma sesión: **esqueleto de la app** en `app/` (Expo SDK 57 + TS +
-expo-router, plantilla limpiada). Tokens y componentes del sistema en
-`app/src/ui/` (Archivo empaquetada vía @expo-google-fonts — sin
-peticiones a terceros), puerta de edad con AsyncStorage (fail-closed),
-tabs Ventana/Perfil/Ajustes y `src/ventana.tsx` consumiendo el
-`GET /api/window` real (sondeo 60 s + cuenta atrás; CORS abierto solo
-en ese endpoint). Verificado con export web + Chromium contra el
-servidor real: puerta → cerrado → abierto por CLI con cuenta atrás →
-pestañas → reinicio de puerta, cero errores de consola y `tsc` limpio.
-Pendiente de la app en `app/README.md` (backend app, onboarding real,
-deck, push, iconos).
+**Producto** (de PRODUCTO.md; si el código y el documento discrepan,
+gana el documento y se arregla el código):
 
-Añadido en sesión 2026-07-26 (misma rama): **backend de la app** en
-`server-app/` — Node + Postgres + WebSockets (`pg` y `ws`; aquí sí hay
-dependencias, lo justifica PRODUCTO.md §5). Implementa acceso por
-enlace mágico con sesión Bearer, onboarding completo (verificación de
-edad guardando solo el resultado, perfil, «qué buscas», vídeo con
-subida directa firmada), webhook de la plataforma de vídeo con filtro
-automático + **cola humana siempre antes de publicar**, ventana/deck/
-like/match, plan con aceptación, chat por WebSocket, barrido de cierre
-(matches sin plan mueren con sus mensajes; con plan, +24 h), reportes,
-bloqueo, expulsión y RGPD (export y borrado real con purga del vídeo).
-Contrato en `server-app/CONTRATO.md`, admin en `server-app/cli.js`.
-Verificado con 47 checks de punta a punta contra Postgres real
-(incluidos WebSocket, cierre de ventana y expulsión).
+- Al cerrar la ventana mueren los matches **sin plan aceptado** y se
+  borran sus mensajes; con plan aceptado viven 24 h tras la hora del plan.
+- Ningún vídeo se publica sin **revisión humana**. El filtro automático
+  solo puede rechazar, nunca aprobar. Sin vídeo aprobado, el perfil no
+  aparece en la ventana — sin excepciones.
+- De la verificación de edad se guarda **solo el resultado**: ni
+  documento ni biometría entran en nuestra base.
+- Un solo aviso por ventana. Nada de recordatorios ni re-engagement.
+- Fuera de la app solo se ve «DTF.»; el nombre largo jamás en fichas de
+  tienda, capturas ni notas de versión.
+- Borrar es borrar: la cuenta se elimina y el vídeo se purga también en
+  la plataforma.
 
-Misma sesión: **iconos de la app** generados desde `favicon.svg` con la
-construcción de marca real (script en el histórico: mide la caja del
-wordmark con getBBox y rasteriza con Chromium). `icon.png`/`favicon.png`
-mantienen el DTF abajo-izquierda; el adaptativo de Android y el splash
-lo centran (zona segura del recorte circular).
-
-Misma sesión: **onboarding real en la app**. `src/api.ts` + `sesion.tsx`
-(sesión Bearer en AsyncStorage), `entrar.tsx` (enlace mágico; campo para
-pegar el token mientras no haya deep link firmado), `onboarding.tsx`
-(los 5 pasos **en el orden que dicta `falta[]` del servidor**, con
-validación local para no mandar pasos a medias), deck real con
-like/pass en la pestaña Ventana, y Perfil/Ajustes con datos reales
-(pausar, export, borrado). CORS abierto en el backend de la app (la
-sesión va en cabecera, no en cookie; lo piden la vista web y el plan B
-PWA). Verificado en Chromium contra Postgres + backend reales: puerta →
-enlace → 5 pasos → webhook de vídeo → cola humana → ventana abierta por
-CLI → deck → like, cero errores de consola y `tsc` limpio.
-
-## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
-
-1. **Rellenar los `[PENDIENTE]` legales** que quedan (responsable, NIF,
-   domicilio, email de privacidad, plazo de conservación) y pasar por
-   asesoría. No lanzar el waitlist sin esto.
-2. **Desplegar en clouding.io** siguiendo `server/README.md` (Node 22 +
-   systemd + Caddy) y crear la cuenta de Brevo (verificar dominio,
-   `BREVO_API_KEY`). Al desplegar, añadir «Entrar» (`/entrar/`) al menú
-   de la landing — hasta entonces las páginas de cuenta siguen sin
-   enlazar.
-3. Migración a Astro por componentes (estructura ya definida en
-   ARQUITECTURA.md) — solo cuando el proyecto lo pida; el HTML actual es
-   producción.
-4. Foto editorial (`<picture>` AVIF+WebP, siempre `grayscale(1)`).
-
-## Reglas del sistema de diseño (no negociables)
+**Diseño:**
 
 - Cero `border-radius`; una sola regla: `2px solid var(--ink)`.
 - Todo alineado a la izquierda; fotografía siempre en B/N.
@@ -147,15 +79,48 @@ CLI → deck → like, cero errores de consola y `tsc` limpio.
   de fallos AA.
 - El foco `:focus-visible` nunca se elimina.
 - Única sombra permitida: la de la tarjeta de notificación.
-- Los tokens viven en `:root` de `index.html`; `assets/legal.css` y
-  `assets/app.css` los duplican — si cambias uno, cambia los tres.
+- Los tokens viven en **cuatro** sitios: `:root` de `index.html`,
+  `assets/legal.css`, `assets/app.css` y `app/src/ui/tokens.ts`. Si
+  cambias uno, cambia los cuatro.
+
+## Siguiente trabajo
+
+**Bloqueante y del responsable** (nada de esto lo puedo hacer yo):
+
+1. Rellenar los `[PENDIENTE]` legales (responsable, NIF, domicilio,
+   email de privacidad, plazo de conservación) y pasar por asesoría.
+2. Desplegar en clouding.io (`server/README.md`) y crear la cuenta de
+   Brevo (`server/README.md` §Alta en Brevo: dominio, DNS, clave). Al
+   desplegar, añadir «Entrar» al menú de la landing.
+3. Las decisiones abiertas de PRODUCTO.md §8: umbral de confirmados para
+   la primera ventana, presupuesto y proveedor de verificación de edad,
+   quién modera, fecha de beta.
+
+**Código, en este orden** (detalle en `app/README.md`):
+
+1. Grabación real del vídeo (cámara en vivo, sin galería) y subida a la
+   URL firmada que el backend ya devuelve.
+2. Reproductor del vídeo en el deck.
+3. Pantallas de matches, plan y chat — el backend ya los sirve.
+4. Push (APNs/FCM): el aviso único de apertura.
+5. Enlace profundo firmado para el acceso (quitar el campo de token).
+6. Backoffice web de moderación sobre `/api/app/mod/*`.
+7. Foto editorial de la landing (`<picture>` AVIF+WebP, `grayscale(1)`).
 
 ## Convenciones de trabajo
 
-- Commits en español, mensaje explicando el porqué.
-- Verificar en navegador antes de subir: servir con
-  `python3 -m http.server` y usar el Chromium de
-  `/opt/pw-browsers/chromium-1194/chrome-linux/chrome` (Playwright:
-  `executablePath` a esa ruta, no descargar navegadores).
+- Commits en español, mensaje explicando **el porqué**.
+- **Verificar en navegador antes de subir.** Chromium de Playwright en
+  `/opt/pw-browsers/chromium-1194/chrome-linux/chrome` (`executablePath`
+  a esa ruta; nunca descargar navegadores). Playwright está global en
+  `/opt/node22/lib/node_modules/playwright`.
+- Web: servir con `python3 -m http.server` o con `server/server.js`.
+  App: `npx expo export --platform web` y servir `dist/` con fallback
+  `.html` (el servidor estático simple no resuelve las rutas de
+  expo-router).
+- Postgres para probar `server-app/`: el clúster no arranca como root;
+  `initdb`/`pg_ctl` con otro usuario y `DATABASE_URL` por socket.
 - Objetivo Lighthouse 100/100/100/100; si baja de 95 en performance,
   sobra una librería.
+- Los `data/` de ambos servidores y `node_modules` están en
+  `.gitignore`. Los emails en modo log salen en `*/data/outbox.log`.
