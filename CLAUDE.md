@@ -65,6 +65,16 @@ y un bug real: `flex: 1` (flex-basis 0) aplastaba a 21px el alto de los
 inputs de email en móvil (landing y /entrar/) — arreglado con
 `flex: none` en columna.
 
+Misma sesión: **PRODUCTO.md** — documento de producto del MVP de la
+app: restricciones de tienda como perímetro, mecánica exacta de la
+ventana (nacional, 18–21h → 23:58, matches mueren al cierre salvo plan
+aceptado +24h), recorte v1 (sin fotos en chat, sin pagos — beta
+gratis), verificación de edad en dos pasos (facial → documental,
+~0,3–0,5 €/usuario), pipeline de moderación de vídeo (automático +
+humano SIEMPRE antes de publicar), stack (React Native + Expo; Node +
+Postgres + WebSockets), métricas de la beta y decisiones abiertas del
+responsable. Las promesas de la landing se tratan como contrato.
+
 ## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
 
 1. **Rellenar los `[PENDIENTE]` legales** que quedan (responsable, NIF,

@@ -1,5 +1,9 @@
 # DTF. — Por dónde empezar a desarrollar
 
+> Este documento cubre la web y su infraestructura. El producto de la
+> app (mecánica de la ventana, MVP, verificación de edad, moderación,
+> stack móvil) está en [`PRODUCTO.md`](PRODUCTO.md).
+
 ## Qué tienes ya
 
 `index.html` es la landing completa, fiel al handoff y lista para desplegar hoy:

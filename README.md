@@ -26,7 +26,9 @@ server/                  Backend del waitlist: API + estáticos + CLI de
 fonts/                   Archivo variable autoalojada (OFL, subconjunto latino)
 favicon.svg              Cuadrado rojo + "DTF" en trazados de Archivo 800/125%
 robots.txt, sitemap.xml  SEO básico
-ARQUITECTURA.md          Plan de desarrollo y decisiones tomadas
+ARQUITECTURA.md          Plan de desarrollo y decisiones tomadas (web)
+PRODUCTO.md              MVP de la app: la ventana, verificación de
+                         edad, moderación, stack móvil y riesgos
 ```
 
 ## Desplegar
