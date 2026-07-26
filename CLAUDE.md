@@ -36,6 +36,10 @@ horizontal en móvil, cero errores de consola):
   (`/api/session/link`, `/api/me`, `/api/waitlist/confirm`,
   `/api/waitlist/unsubscribe`) y hooks `window.DTF.*` para revisar los
   estados sin servidor (`setSession`, `setState`, `showSent`).
+- Decisión de arquitectura para la app (documentada en ARQUITECTURA.md):
+  el vídeo de perfil va en plataforma gestionada (Stream/api.video/Mux)
+  con subida directa firmada desde el cliente y revisión de contenido
+  previa a publicar. Nunca en servidor propio ni público sin moderar.
 
 ## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
 

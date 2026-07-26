@@ -122,6 +122,39 @@ la escala para que nadie meta un `rounded-lg`.
 - Prueba la puerta de edad con teclado y lector de pantalla: es lo primero que
   ve todo el mundo y ya lleva focus trap.
 
+## Vídeo de perfil (decisión tomada — para la app, no para esta web)
+
+El perfil en vídeo de 30 segundos **no se guarda en servidor propio**.
+Decisión: **plataforma de vídeo gestionada con subida directa desde el
+cliente y revisión de contenido previa a publicar**.
+
+- **Plataforma gestionada** (Cloudflare Stream por coste y simplicidad;
+  api.video si se prima residencia UE de serie; Mux si hacen falta
+  analíticas finas). Ellos transcodifican, sirven HLS adaptativo con su
+  CDN y generan miniaturas. Nuestro backend guarda solo el ID del vídeo
+  junto al perfil: el fichero nunca pasa por nuestros servidores.
+- **Subida directa desde el cliente** con URL de subida firmada que
+  emite el backend. Límite duro en el cliente: 30 s y 720p, para que
+  subir sea rápido y barato.
+- **Revisión antes de publicar** (obligada por las políticas de
+  contenido adulto de App Store/Google Play y por la promesa de la
+  marca: 0 contenido explícito, revisión humana). Flujo: subida →
+  estado «pendiente» (webhook de la plataforma) → filtro automático +
+  revisión humana → visible. Un vídeo nunca es público sin pasar por la
+  cola.
+- **Reproducción solo con URLs firmadas y caducables**; nunca enlaces
+  públicos de CDN. La grabación de pantalla no la para la técnica: para
+  eso está la norma de la casa.
+- **RGPD**: el vídeo es dato personal. Borrar la cuenta debe purgar el
+  vídeo también en la plataforma (llamada API explícita, no basta con
+  borrar el ID), y la plataforma entra como encargado del tratamiento
+  en la política de privacidad, igual que el proveedor de email.
+  Revisar DPA y residencia de datos antes de firmar.
+
+Coste de referencia: a 30 s por perfil, 10.000 perfiles ≈ 5.000 minutos
+almacenados ≈ 25 $/mes en Cloudflare Stream; el visionado se factura por
+minuto servido.
+
 ## Orden de trabajo sugerido
 
 1. Repo + deploy del `index.html` tal cual, con dominio y HTTPS. Ya captas nada.
