@@ -1,0 +1,5 @@
+# Datos locales del servidor (SQLite, correo en modo log)
+server/data/
+
+# Secretos de entorno (BREVO_API_KEY, etc.)
+.env

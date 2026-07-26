@@ -81,13 +81,19 @@ la escala para que nadie meta un `rounded-lg`.
 
 ## Lo que falta para producción
 
-**Backend (bloqueante)**
-- `POST /api/waitlist` → validación server-side, rate limit por IP, doble
-  opt-in por email, almacenamiento (Resend/Loops/Brevo o tu propia tabla).
-  Guarda solo email + timestamp + consentimiento; nada más.
-- `GET /api/window` → `{ open, closesAt }`. La landing ya consume ese contrato:
-  `window.DTF.setWindow(true, '2026-07-26T23:58:00+02:00')`. Fija la fuente de
-  verdad en el servidor: la cuenta atrás del cliente solo pinta.
+**Backend — hecho (2026-07-26), implementado en `server/`**
+- Decisión: VPS en clouding.io (datos en España) con un único proceso Node
+  **sin dependencias** (node:http, node:sqlite, fetch) que sirve estáticos
+  y API; Brevo (Francia, UE) como transaccional de email. Detalle completo
+  en `server/README.md`.
+- `POST /api/waitlist` con validación server-side, rate limit por IP,
+  doble opt-in real y tabla propia en SQLite. Guarda solo email +
+  timestamp + consentimiento (+ preferencias del panel); tokens hasheados.
+- `GET /api/window` es la fuente de verdad y la landing ya lo consume al
+  cargar; la ventana se abre/cierra con `server/cli.js` (que también envía
+  el aviso «Acaba de abrir.» a los confirmados).
+- Pendiente para producción: cuenta de Brevo (dominio verificado +
+  `BREVO_API_KEY`) y el despliegue en sí.
 
 **Legal (España, y no es opcional en un 18+)**
 - La puerta de edad con `localStorage` es un gesto de UX, **no** verificación.

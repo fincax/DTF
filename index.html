@@ -1149,6 +1149,13 @@ img { display: block; max-width: 100%; }
     }
   };
 
+  /* La fuente de verdad es el servidor. Si no hay backend o falla,
+     la franja se queda en «cerrado», que es el estado seguro. */
+  fetch('/api/window')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (w) { if (w) window.DTF.setWindow(w.open, w.closesAt); })
+    .catch(function () {});
+
   /* --- Menú móvil ---------------------------------------- */
   var header = $('header'), toggle = $('nav-toggle');
   toggle.addEventListener('click', function () {

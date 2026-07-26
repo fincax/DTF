@@ -1,0 +1,13 @@
+{
+  "name": "dtf-server",
+  "private": true,
+  "type": "module",
+  "description": "Backend del waitlist de DTF. Sin dependencias: Node trae HTTP, SQLite y fetch.",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=../.env server.js",
+    "cli": "node --env-file-if-exists=../.env cli.js"
+  }
+}

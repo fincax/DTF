@@ -41,21 +41,34 @@ horizontal en móvil, cero errores de consola):
   con subida directa firmada desde el cliente y revisión de contenido
   previa a publicar. Nunca en servidor propio ni público sin moderar.
 
+Añadido en la misma sesión 2026-07-26: **backend del waitlist completo**
+en `server/` (decisiones del usuario: VPS clouding.io; Brevo como email,
+recomendación aceptada). Un proceso Node sin dependencias npm
+(node:http + node:sqlite + fetch, requiere Node ≥ 22.13) que sirve los
+estáticos con lista blanca y toda la API: alta con doble opt-in, baja
+con borrado real, enlace mágico + sesión con cookie, panel
+(GET/PATCH /api/me, export RGPD), `GET /api/window` (la landing ya lo
+consume) y `server/cli.js` (stats, abrir/cerrar ventana, aviso masivo).
+Modo log sin `BREVO_API_KEY` (emails a `server/data/outbox.log`).
+Verificado con 32 checks de API y un E2E completo en Chromium contra el
+servidor real (alta → confirmar → entrar → panel → preferencias →
+ventana por CLI → baja), cero errores de consola. En `/privacidad/` ya
+están declarados Brevo y Clouding como encargados.
+
 ## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
 
-1. **Backend del waitlist** (bloqueante): `POST /api/waitlist` con
-   validación server-side, rate limit por IP, doble opt-in y
-   almacenamiento de solo email + timestamp + consentimiento. Requiere
-   decidir proveedor (Resend/Loops/Brevo o tabla propia).
-2. **Rellenar los `[PENDIENTE]` legales** con datos reales de la empresa
-   y pasar por asesoría. No lanzar el waitlist sin esto.
-3. **`GET /api/window`** → `{ open, closesAt }`. La landing ya consume el
-   contrato vía `window.DTF.setWindow(open, closesAt)`; el servidor es la
-   fuente de verdad, el cliente solo pinta.
-4. Migración a Astro por componentes (estructura ya definida en
+1. **Rellenar los `[PENDIENTE]` legales** que quedan (responsable, NIF,
+   domicilio, email de privacidad, plazo de conservación) y pasar por
+   asesoría. No lanzar el waitlist sin esto.
+2. **Desplegar en clouding.io** siguiendo `server/README.md` (Node 22 +
+   systemd + Caddy) y crear la cuenta de Brevo (verificar dominio,
+   `BREVO_API_KEY`). Al desplegar, añadir «Entrar» (`/entrar/`) al menú
+   de la landing — hasta entonces las páginas de cuenta siguen sin
+   enlazar.
+3. Migración a Astro por componentes (estructura ya definida en
    ARQUITECTURA.md) — solo cuando el proyecto lo pida; el HTML actual es
    producción.
-5. Foto editorial (`<picture>` AVIF+WebP, siempre `grayscale(1)`).
+4. Foto editorial (`<picture>` AVIF+WebP, siempre `grayscale(1)`).
 
 ## Reglas del sistema de diseño (no negociables)
 
