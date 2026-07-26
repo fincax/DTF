@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrar — DTF.</title>
+<meta name="description" content="Accede a tu panel de DTF. con un enlace de un solo uso. Sin contraseñas.">
+<meta name="theme-color" content="#f3f2f2">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://dtf.app/entrar/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="logo header__logo" aria-label="DTF., inicio">DTF<span class="dot">.</span></a>
+  </div>
+</header>
+
+<main id="contenido" class="container page">
+  <p class="kicker">Acceso</p>
+  <h1 class="h1">Sin contraseñas. Como debe ser.</h1>
+  <p class="lead">
+    Dinos tu email y te mandamos un enlace de acceso de un solo uso.
+    Caduca a los 15 minutos — aquí caduca todo.
+  </p>
+
+  <form class="form" id="login" novalidate>
+    <div class="inline-form">
+      <label class="sr-only" for="email">Tu email</label>
+      <input class="input" id="email" name="email" type="email" required
+             autocomplete="email" inputmode="email" placeholder="tu@email.com">
+      <button class="btn btn--ink" type="submit" id="login-submit">Mándame el enlace</button>
+    </div>
+  </form>
+  <p class="feedback" id="login-error" role="alert" hidden></p>
+
+  <div class="callout" id="login-success" role="status" tabindex="-1" hidden>
+    <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff9783" stroke-width="3" aria-hidden="true">
+      <polyline points="4 13 9 18 20 6"/>
+    </svg>
+    <span>
+      Enviado. Revisa tu bandeja — y el spam, que a veces se pone tímido.
+      <span class="callout__hint">Si en 15 minutos no ha llegado, vuelve a pedirlo desde aquí.</span>
+    </span>
+  </div>
+
+  <p class="page__micro">
+    Esto solo funciona si ya estás en la lista de espera.
+    ¿Todavía no? <a href="/#unete">Apúntate primero</a>.
+  </p>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="logo footer__logo">DTF<span class="dot">.</span></span>
+    <div class="footer__links">
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/condiciones/">Condiciones</a>
+      <span class="footer__legal">Solo mayores de 18 años</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* En producción esto lo atiende el backend:
+     POST /api/session/link { email } -> 204 (envía email con enlace
+     firmado hacia /panel/?token=…). La respuesta es 204 exista o no
+     el email: no se confirma quién está en la lista. */
+  var ENDPOINT = '/api/session/link';
+
+  var form = document.getElementById('login');
+  var input = document.getElementById('email');
+  var submit = document.getElementById('login-submit');
+  var success = document.getElementById('login-success');
+  var error = document.getElementById('login-error');
+
+  function fail(msg) {
+    error.textContent = msg;
+    error.hidden = false;
+    input.setAttribute('aria-invalid', 'true');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    error.hidden = true;
+    input.removeAttribute('aria-invalid');
+
+    if (!input.checkValidity()) {
+      fail('Ese email no cuela. Revísalo y vuelve a intentarlo.');
+      input.focus();
+      return;
+    }
+
+    submit.disabled = true;
+    submit.textContent = 'Un momento…';
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: input.value.trim() })
+    })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); })
+      .then(function () {
+        form.hidden = true;
+        success.hidden = false;
+        success.focus();
+      })
+      .catch(function () {
+        submit.disabled = false;
+        submit.textContent = 'Mándame el enlace';
+        fail('No hemos podido enviarlo. Inténtalo otra vez en un minuto.');
+      });
+  });
+
+  /* Hook de diseño para revisar el estado de éxito sin backend:
+     window.DTF.showSent() */
+  window.DTF = {
+    showSent: function () {
+      form.hidden = true;
+      error.hidden = true;
+      success.hidden = false;
+    }
+  };
+})();
+</script>
+</body>
+</html>

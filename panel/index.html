@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tu panel — DTF.</title>
+<meta name="description" content="Tu sitio en la lista de espera de DTF.: estado, preferencias y tus datos.">
+<meta name="theme-color" content="#f3f2f2">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://dtf.app/panel/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="logo header__logo" aria-label="DTF., inicio">DTF<span class="dot">.</span></a>
+    <button class="btn btn--secondary btn--sm" id="logout" hidden>Cerrar sesión</button>
+  </div>
+</header>
+
+<main id="contenido" class="container page panel">
+
+  <!-- Estado A: sin sesión -->
+  <section id="view-anon" hidden>
+    <p class="kicker">Tu panel</p>
+    <h1 class="h1">Primero hay que entrar.</h1>
+    <p class="lead">
+      Este panel es tuyo y de nadie más, así que toca demostrar que eres tú.
+      Sin contraseñas: te mandamos un enlace al email con el que te apuntaste.
+    </p>
+    <div class="form__actions">
+      <a class="btn btn--primary" href="/entrar/">
+        Entrar con mi email
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/>
+        </svg>
+      </a>
+    </div>
+    <p class="page__micro">
+      ¿Todavía no estás en la lista? <a href="/#unete">Apúntate</a> y luego vuelves.
+    </p>
+  </section>
+
+  <!-- Estado B: con sesión -->
+  <section id="view-panel" hidden>
+    <p class="kicker">Tu panel</p>
+    <h1 class="h1">Estás dentro.</h1>
+    <p class="lead">
+      Cuando la ventana abra, el aviso sonará en tu email.
+      Mientras tanto, esto es todo lo que hay que gestionar — que no es mucho, a propósito.
+    </p>
+
+    <div class="facts">
+      <div class="fact">
+        <span class="meta-label">En la lista</span>
+        <p class="fact__value fact__value--accent" id="fact-position">#—</p>
+        <p class="fact__note" id="fact-total">de — apuntados</p>
+      </div>
+      <div class="fact">
+        <span class="meta-label">Desde</span>
+        <p class="fact__value" id="fact-since">—</p>
+        <p class="fact__note">El orden de llegada cuenta.</p>
+      </div>
+      <div class="fact">
+        <span class="meta-label">Tu email</span>
+        <p class="fact__value" id="fact-email" style="font-size:clamp(17px,2vw,20px)">—</p>
+        <p class="fact__note" id="fact-confirmed">Confirmado con doble opt-in.</p>
+      </div>
+    </div>
+
+    <section class="panel__section" aria-labelledby="prefs-title">
+      <h2 id="prefs-title">Preferencias</h2>
+      <p class="body">
+        Empezamos por <strong>Madrid y Barcelona</strong>. Di dónde estás y
+        te avisamos cuando la ventana abra en tu ciudad.
+      </p>
+
+      <form class="form" id="prefs" novalidate>
+        <fieldset class="field">
+          <legend class="field__label">Tu ciudad</legend>
+          <label class="choice">
+            <input type="radio" name="city" value="madrid">
+            <span>
+              <span class="choice__title">Madrid</span>
+              <span class="choice__hint">En la primera ventana.</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="city" value="barcelona">
+            <span>
+              <span class="choice__title">Barcelona</span>
+              <span class="choice__hint">En la primera ventana.</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="city" value="otra">
+            <span>
+              <span class="choice__title">Otra</span>
+              <span class="choice__hint">Te avisamos cuando lleguemos. Sin fecha, como todo aquí.</span>
+            </span>
+          </label>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend class="field__label">Avisos</legend>
+          <label class="choice">
+            <input type="checkbox" name="launch-news" id="pref-news">
+            <span>
+              <span class="choice__title">Novedades del lanzamiento</span>
+              <span class="choice__hint">Además del aviso de ventana: llegada a tu ciudad, cierre de la beta. Nada más.</span>
+            </span>
+          </label>
+        </fieldset>
+
+        <div class="form__actions">
+          <button class="btn btn--ink" type="submit" id="prefs-submit">Guardar</button>
+        </div>
+      </form>
+      <p class="feedback" id="prefs-error" role="alert" hidden></p>
+      <div class="callout" id="prefs-success" role="status" tabindex="-1" hidden>
+        <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff9783" stroke-width="3" aria-hidden="true">
+          <polyline points="4 13 9 18 20 6"/>
+        </svg>
+        <span>Guardado. Ya está — te dijimos que no era mucho.</span>
+      </div>
+    </section>
+
+    <section class="panel__section" aria-labelledby="data-title">
+      <h2 id="data-title">Tus datos</h2>
+      <p class="body">
+        Guardamos tu email, la fecha en que te apuntaste, tus preferencias y
+        el registro de tu consentimiento. Nada más — y puedes llevártelo o
+        borrarlo cuando quieras, como dice la
+        <a href="/privacidad/">política de privacidad</a>.
+      </p>
+      <div class="form__actions">
+        <a class="btn btn--secondary" id="data-download" href="/api/me/export" download="dtf-mis-datos.json">Descargar mis datos</a>
+        <a class="btn btn--primary" href="/baja/">Borrarlo todo y salir de la lista</a>
+      </div>
+      <p class="page__micro">
+        Borrar es de verdad: sales de la lista, tu email desaparece y el
+        aviso ya no sonará. Sin rencores.
+      </p>
+    </section>
+  </section>
+
+  <!-- Estado C: cargando (visible solo el primer instante) -->
+  <section id="view-loading">
+    <p class="kicker">Tu panel</p>
+    <p class="lead" role="status">Un momento…</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="logo footer__logo">DTF<span class="dot">.</span></span>
+    <div class="footer__links">
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/condiciones/">Condiciones</a>
+      <span class="footer__legal">Solo mayores de 18 años</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Contrato con el backend (pendiente de implementar):
+       GET  /api/me            -> 200 { email, position, total, joinedAt,
+                                        confirmed, city, launchNews }
+                                  401 si no hay sesión
+       PATCH /api/me           -> 204 con { city, launchNews }
+       POST /api/session/close -> 204
+     El cliente solo pinta; la sesión vive en una cookie httpOnly. */
+  var API = {
+    me: '/api/me',
+    close: '/api/session/close'
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var views = { anon: $('view-anon'), panel: $('view-panel'), loading: $('view-loading') };
+
+  function show(name) {
+    for (var k in views) views[k].hidden = (k !== name);
+    $('logout').hidden = (name !== 'panel');
+  }
+
+  function fmtDate(iso) {
+    try {
+      return new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+    } catch (e) { return '—'; }
+  }
+
+  function render(me) {
+    $('fact-position').textContent = '#' + (me.position != null ? me.position.toLocaleString('es-ES') : '—');
+    $('fact-total').textContent = 'de ' + (me.total != null ? me.total.toLocaleString('es-ES') : '—') + ' apuntados';
+    $('fact-since').textContent = me.joinedAt ? fmtDate(me.joinedAt) : '—';
+    $('fact-email').textContent = me.email || '—';
+    $('fact-confirmed').textContent = me.confirmed
+      ? 'Confirmado con doble opt-in.'
+      : 'Sin confirmar: revisa tu email.';
+
+    var city = document.querySelector('input[name="city"][value="' + (me.city || '') + '"]');
+    if (city) city.checked = true;
+    $('pref-news').checked = !!me.launchNews;
+
+    show('panel');
+  }
+
+  fetch(API.me, { headers: { Accept: 'application/json' } })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(function () { show('anon'); });
+
+  /* --- Preferencias ---------------------------------------- */
+  var prefs = $('prefs');
+  var prefsSubmit = $('prefs-submit');
+  var prefsSuccess = $('prefs-success');
+  var prefsError = $('prefs-error');
+
+  prefs.addEventListener('submit', function (e) {
+    e.preventDefault();
+    prefsError.hidden = true;
+    prefsSuccess.hidden = true;
+    prefsSubmit.disabled = true;
+    prefsSubmit.textContent = 'Guardando…';
+
+    var city = (prefs.querySelector('input[name="city"]:checked') || {}).value || null;
+
+    fetch(API.me, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ city: city, launchNews: $('pref-news').checked })
+    })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); })
+      .then(function () {
+        prefsSuccess.hidden = false;
+        prefsSuccess.focus();
+      })
+      .catch(function () {
+        prefsError.textContent = 'No se ha podido guardar. Inténtalo otra vez en un minuto.';
+        prefsError.hidden = false;
+      })
+      .then(function () {
+        prefsSubmit.disabled = false;
+        prefsSubmit.textContent = 'Guardar';
+      });
+  });
+
+  /* --- Cerrar sesión --------------------------------------- */
+  $('logout').addEventListener('click', function () {
+    fetch(API.close, { method: 'POST' })
+      .catch(function () {})
+      .then(function () { window.location.href = '/'; });
+  });
+
+  /* Hook de diseño para revisar el panel sin backend:
+     window.DTF.setSession({ email:'tu@email.com', position:1024,
+       total:5211, joinedAt:'2026-07-12T21:04:00+02:00',
+       confirmed:true, city:'madrid', launchNews:true })
+     window.DTF.setSession(null)  -> estado sin sesión */
+  window.DTF = {
+    setSession: function (me) { me ? render(me) : show('anon'); }
+  };
+})();
+</script>
+</body>
+</html>

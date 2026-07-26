@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darse de baja — DTF.</title>
+<meta name="description" content="Baja de la lista de espera de DTF.: tu email se borra y no volvemos a escribirte.">
+<meta name="theme-color" content="#f3f2f2">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://dtf.app/baja/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="logo header__logo" aria-label="DTF., inicio">DTF<span class="dot">.</span></a>
+  </div>
+</header>
+
+<main id="contenido" class="container page">
+
+  <!-- Estado A: confirmar la baja (nada se borra sin un clic explícito) -->
+  <section id="view-ask">
+    <p class="kicker">Darse de baja</p>
+    <h1 class="h1">¿Seguro que te vas?</h1>
+    <p class="lead">
+      Si sigues, tu email desaparece de la lista, tu puesto se pierde y el
+      aviso de la ventana ya no sonará. Borrar es de verdad: no guardamos
+      copia ni «por si acaso».
+    </p>
+    <div class="form__actions">
+      <button class="btn btn--primary" type="button" id="confirm-delete">Sí, borradlo todo</button>
+      <a class="btn btn--secondary" href="/panel/">No, me quedo</a>
+    </div>
+    <p class="feedback" id="delete-error" role="alert" hidden></p>
+    <p class="page__micro">
+      Si solo te sobran emails: el único previsto es el aviso de ventana.
+      Las novedades del lanzamiento se apagan en <a href="/panel/">tu panel</a>.
+    </p>
+  </section>
+
+  <!-- Estado B: baja hecha -->
+  <section id="view-done" hidden>
+    <p class="kicker">Baja</p>
+    <h1 class="h1">Fuera. Sin rencores.</h1>
+    <p class="lead">
+      Tu email ya no está en la lista y no volveremos a escribirte.
+      Si algún día cambias de idea, la puerta sigue donde siempre.
+    </p>
+    <div class="form__actions">
+      <a class="btn btn--secondary" href="/">Volver al principio</a>
+    </div>
+  </section>
+
+  <!-- Estado C: enlace caducado o sin sesión -->
+  <section id="view-expired" hidden>
+    <p class="kicker">Vaya</p>
+    <h1 class="h1">Este enlace ya no vale.</h1>
+    <p class="lead">
+      Los enlaces de baja caducan, como todo aquí. Entra en tu panel y
+      podrás borrarlo todo desde allí, o usa el enlace del último email.
+    </p>
+    <div class="form__actions">
+      <a class="btn btn--primary" href="/entrar/">Entrar en mi panel</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="logo footer__logo">DTF<span class="dot">.</span></span>
+    <div class="footer__links">
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/condiciones/">Condiciones</a>
+      <span class="footer__legal">Solo mayores de 18 años</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Contrato con el backend (pendiente de implementar):
+       POST /api/waitlist/unsubscribe { token? } -> 204 baja hecha
+                                                    410 token caducado
+     Llega aquí desde dos sitios: el enlace de baja de cualquier email
+     (/baja/?token=…) o el botón «Borrarlo todo» del panel (usa la
+     cookie de sesión, sin token). Nada se borra sin el clic de
+     confirmación de esta página. */
+  var ENDPOINT = '/api/waitlist/unsubscribe';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var views = { ask: $('view-ask'), done: $('view-done'), expired: $('view-expired') };
+
+  function show(name) {
+    for (var k in views) views[k].hidden = (k !== name);
+  }
+
+  var token = new URLSearchParams(window.location.search).get('token');
+  var btn = $('confirm-delete');
+  var error = $('delete-error');
+
+  btn.addEventListener('click', function () {
+    error.hidden = true;
+    btn.disabled = true;
+    btn.textContent = 'Borrando…';
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(token ? { token: token } : {})
+    })
+      .then(function (r) {
+        if (r.status === 410) { show('expired'); return; }
+        if (!r.ok) throw new Error(r.status);
+        show('done');
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Sí, borradlo todo';
+        error.textContent = 'No hemos podido tramitar la baja. Inténtalo otra vez en un minuto.';
+        error.hidden = false;
+      });
+  });
+
+  /* Hook de diseño para revisar los estados sin backend:
+     window.DTF.setState('ask' | 'done' | 'expired') */
+  window.DTF = { setState: show };
+})();
+</script>
+</body>
+</html>

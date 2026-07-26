@@ -21,6 +21,22 @@ validación y éxito del waitlist, menú móvil, cero errores de consola):
   (clase `.pending` en `assets/legal.css`): si se ven, no se lanza.
 - `404.html`, `robots.txt`, `sitemap.xml`, `README.md`.
 
+Añadido en sesión 2026-07-26 (rama `claude/design-missing-pages-7xro3k`),
+verificado en Chromium headless (estados, validación, sin scroll
+horizontal en móvil, cero errores de consola):
+
+- Páginas de cuenta: `/entrar/` (enlace mágico), `/panel/` (estado en la
+  lista, preferencias de ciudad y avisos, descarga/borrado de datos),
+  `/confirmar/` (doble opt-in: ok/caducado) y `/baja/` (confirmación
+  explícita antes de borrar). Todas `noindex`, fuera del sitemap y sin
+  enlazar desde la landing hasta que exista el backend.
+- `assets/app.css` — estilos compartidos de esas páginas (tokens
+  duplicados; radios/checkboxes cuadrados del sistema, rejilla `.facts`).
+- Contratos de API comentados en el `<script>` de cada página
+  (`/api/session/link`, `/api/me`, `/api/waitlist/confirm`,
+  `/api/waitlist/unsubscribe`) y hooks `window.DTF.*` para revisar los
+  estados sin servidor (`setSession`, `setState`, `showSent`).
+
 ## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
 
 1. **Backend del waitlist** (bloqueante): `POST /api/waitlist` con
@@ -45,8 +61,8 @@ validación y éxito del waitlist, menú móvil, cero errores de consola):
   `--accent` (#ec3013) no pasa en texto pequeño.
 - El foco `:focus-visible` nunca se elimina.
 - Única sombra permitida: la de la tarjeta de notificación.
-- Los tokens viven en `:root` de `index.html`; `assets/legal.css` los
-  duplica para las páginas legales — si cambias uno, cambia los dos.
+- Los tokens viven en `:root` de `index.html`; `assets/legal.css` y
+  `assets/app.css` los duplican — si cambias uno, cambia los tres.
 
 ## Convenciones de trabajo
 

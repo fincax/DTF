@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confirma tu email — DTF.</title>
+<meta name="description" content="Confirmación del doble opt-in de la lista de espera de DTF.">
+<meta name="theme-color" content="#f3f2f2">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://dtf.app/confirmar/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/app.css">
+</head>
+
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="logo header__logo" aria-label="DTF., inicio">DTF<span class="dot">.</span></a>
+  </div>
+</header>
+
+<main id="contenido" class="container page">
+
+  <!-- Estado A: confirmando -->
+  <section id="view-wait">
+    <p class="kicker">Un segundo</p>
+    <h1 class="h1">Confirmando tu email…</h1>
+    <p class="lead" role="status">No cierres todavía. Esto tarda menos que decidir el sitio de la primera cita.</p>
+  </section>
+
+  <!-- Estado B: confirmado -->
+  <section id="view-ok" hidden>
+    <p class="kicker">Confirmado</p>
+    <h1 class="h1">Hecho. Ya eres de los nuestros.</h1>
+    <p class="lead">
+      Tu email está confirmado y tu sitio en la lista, guardado.
+      Cuando la ventana abra, sonará el aviso — uno solo, como prometimos.
+    </p>
+    <div class="form__actions">
+      <a class="btn btn--primary" href="/panel/">
+        Ir a mi panel
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/>
+        </svg>
+      </a>
+      <a class="btn btn--secondary" href="/">Volver al principio</a>
+    </div>
+    <p class="page__micro">
+      Mientras tanto, nada que hacer: ni rachas, ni perfiles que regar.
+      La espera forma parte del plan.
+    </p>
+  </section>
+
+  <!-- Estado C: enlace caducado o inválido -->
+  <section id="view-expired" hidden>
+    <p class="kicker">Vaya</p>
+    <h1 class="h1">Este enlace ha caducado.</h1>
+    <p class="lead">
+      Aquí caduca todo, hasta los enlaces. Apúntate otra vez con el mismo
+      email y te mandamos uno nuevo — el sitio en la lista no se pierde.
+    </p>
+    <div class="form__actions">
+      <a class="btn btn--primary" href="/#unete">Pedir otro enlace</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="logo footer__logo">DTF<span class="dot">.</span></span>
+    <div class="footer__links">
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/condiciones/">Condiciones</a>
+      <span class="footer__legal">Solo mayores de 18 años</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Contrato con el backend (pendiente de implementar):
+       POST /api/waitlist/confirm { token } -> 204 confirmado
+                                               410 caducado / inválido
+     El token llega en el enlace del email: /confirmar/?token=… */
+  var ENDPOINT = '/api/waitlist/confirm';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var views = { wait: $('view-wait'), ok: $('view-ok'), expired: $('view-expired') };
+
+  function show(name) {
+    for (var k in views) views[k].hidden = (k !== name);
+  }
+
+  var token = new URLSearchParams(window.location.search).get('token');
+
+  if (!token) {
+    show('expired');
+  } else {
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: token })
+    })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); show('ok'); })
+      .catch(function () { show('expired'); });
+  }
+
+  /* Hook de diseño para revisar los estados sin backend:
+     window.DTF.setState('wait' | 'ok' | 'expired') */
+  window.DTF = { setState: show };
+})();
+</script>
+</body>
+</html>
