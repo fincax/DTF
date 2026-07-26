@@ -60,6 +60,38 @@ node server/cli.js window close
 node server/cli.js avisar               # reenvía el aviso de ventana abierta
 ```
 
+## Alta en Brevo (unos días ANTES de lanzar)
+
+Sin `BREVO_API_KEY` el servidor funciona pero no envía nada (modo log):
+Brevo se vuelve necesario el día que un usuario real deba recibir su
+confirmación. Hazlo con unos días de margen — la verificación del
+dominio toca DNS y propaga con calma.
+
+1. **Cuenta** en [brevo.com](https://www.brevo.com/es/) — el plan
+   gratuito (300 emails/día) cubre de sobra el goteo de altas. El aviso
+   masivo de ventana, cuando la lista crezca, puede pedir plan de pago
+   puntual.
+2. **Verificar el dominio remitente**: Configuración → Remitentes y
+   dominios → añadir `dtf.app`. Brevo te da 2–3 registros DNS
+   (verificación + DKIM); añádelos donde tengas el DNS del dominio y
+   pulsa verificar. Añade también SPF si Brevo lo indica y, de propina,
+   un DMARC básico (`v=DMARC1; p=none;`).
+3. **Crear el remitente** `aviso@dtf.app` (el que usa `EMAIL_FROM`).
+4. **Clave API**: Configuración → Claves API → generar una nueva.
+5. **En el VPS**: añadir a `/etc/dtf.env` la clave y el remitente…
+
+   ```
+   BREVO_API_KEY=xkeysib-…
+   EMAIL_FROM="DTF. <aviso@dtf.app>"
+   ```
+
+   …y `sudo systemctl restart dtf`. El arranque debe decir
+   `correo: brevo` (antes decía `correo: log`).
+6. **Probar de verdad**: date de alta con un email tuyo y comprueba que
+   el doble opt-in llega a la bandeja (no a spam) en Gmail y Outlook.
+   [mail-tester.com](https://www.mail-tester.com) te da nota y te chiva
+   qué registro DNS falta si algo cojea.
+
 ## Desplegar en clouding.io
 
 Servidor Ubuntu 24.04 pequeño (el flujo es email, no vídeo: con 1 vCPU /
