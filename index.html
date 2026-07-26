@@ -64,11 +64,12 @@
   --ink:           #201e1d;
   --ink-2:         #444141;
   --ink-3:         #605d5d;
-  --meta:          #9b9797;
+  --meta:          #6b6767;   /* AA (≥4.5) sobre bg, surface y surface-alt */
 
   /* Acento */
   --accent:        #ec3013;
-  --accent-hover:  #dd2b0f;
+  --accent-btn:    #dd2b0f;   /* fondo de botón: pasa AA con texto blanco */
+  --accent-btn-hover: #c92511;
   --accent-press:  #ae1800;   /* también: texto rojo accesible AA */
   --accent-dark:   #ff563c;   /* acento sobre fondo oscuro */
   --detail-dark:   #ff9783;
@@ -197,8 +198,8 @@ img { display: block; max-width: 100%; }
   cursor: pointer;
   transition: background-color .12s linear, color .12s linear;
 }
-.btn--primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-.btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
+.btn--primary { background: var(--accent-btn); border-color: var(--accent-btn); color: #fff; }
+.btn--primary:hover { background: var(--accent-btn-hover); border-color: var(--accent-btn-hover); color: #fff; }
 .btn--primary:active { background: var(--accent-press); border-color: var(--accent-press); }
 
 .btn--secondary { background: transparent; border-color: var(--ink); color: var(--ink); }
@@ -249,11 +250,13 @@ img { display: block; max-width: 100%; }
   padding: 32px 0;
 }
 .gate__title { font-weight: 800; font-size: var(--fs-gate); line-height: 1.02; letter-spacing: -.01em; color: var(--bg); text-wrap: pretty; }
-.gate__sub   { font-weight: 600; font-size: 22px; color: var(--ink); }
+.gate__sub   { font-weight: 600; font-size: 24px; color: var(--ink); } /* ≥24px: 3:1 basta sobre el rojo */
 .gate__actions { display: flex; flex-direction: column; gap: 12px; }
-.gate__legal { font-size: 12.5px; line-height: 1.5; color: var(--ink); margin-top: 6px; }
-.gate__legal a { color: var(--ink); font-weight: 600; }
-.gate__legal a:hover { color: var(--ink); text-decoration: underline; }
+/* Texto grande (19px/700): con 3:1 pasa AA sobre el rojo */
+.gate__actions .btn--ghost-light { font-size: 19px; font-weight: 700; }
+.gate__legal { font-size: 12.5px; line-height: 1.5; color: #000; margin-top: 6px; }
+.gate__legal a { color: #000; font-weight: 600; }
+.gate__legal a:hover { color: #000; text-decoration: underline; }
 
 /* --- 6. Franja de estado --------------------------------- */
 .status { border-bottom: var(--rule); }
@@ -268,7 +271,7 @@ img { display: block; max-width: 100%; }
   font-weight: 600;
   font-size: 13px;
   letter-spacing: .14em;
-  color: var(--bg);
+  color: #fff;
 }
 .status__dot {
   width: 10px; height: 10px;
@@ -277,7 +280,7 @@ img { display: block; max-width: 100%; }
 }
 .status--closed { background: var(--ink); }
 .status--closed .status__dot { background: var(--accent-dark); }
-.status--open { background: var(--accent); }
+.status--open { background: var(--accent-btn); }
 .status--open .status__dot { background: var(--bg); animation-duration: 1.2s; }
 
 @keyframes dtfpulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
@@ -388,12 +391,12 @@ img { display: block; max-width: 100%; }
 .notice__icon {
   width: 44px; height: 44px;
   flex: none;
-  background: var(--accent);
+  background: var(--accent-btn);
   display: flex;
   align-items: flex-end;
   padding: 5px;
 }
-.notice__icon span { font-weight: 800; font-stretch: 125%; font-size: 13px; line-height: 1; color: var(--bg); }
+.notice__icon span { font-weight: 800; font-stretch: 125%; font-size: 13px; line-height: 1; color: #fff; }
 .notice__meta { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
 .notice__app { font-weight: 800; font-size: 14px; }
 .notice__time { font-size: 11px; color: var(--meta); }
@@ -476,7 +479,7 @@ img { display: block; max-width: 100%; }
   border-top: var(--rule);
   align-items: baseline;
 }
-.rule-item__num { font-weight: 800; font-size: 18px; color: var(--accent); }
+.rule-item__num { font-weight: 800; font-size: 19px; color: var(--accent); } /* ≥19px/800: 3:1 basta */
 .rule-item__title { font-weight: 600; font-size: 18px; }
 .rule-item__text { font-size: 14.5px; line-height: 1.55; color: var(--ink-3); margin-top: 4px; }
 .rule-item--note { align-items: center; font-size: 14px; color: var(--meta); }
@@ -545,14 +548,15 @@ img { display: block; max-width: 100%; }
   font-weight: 600;
   font-size: 16px;
 }
+/* Texto pequeño sobre el rojo: solo el negro puro pasa AA */
 .waitlist__error {
   margin-top: 12px;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--ink);
+  color: #000;
   max-width: 640px;
 }
-.closing__micro { font-size: 13.5px; line-height: 1.6; color: var(--ink); margin-top: 18px; max-width: 640px; }
+.closing__micro { font-size: 13.5px; line-height: 1.6; color: #000; margin-top: 18px; max-width: 640px; }
 [hidden] { display: none !important; }
 
 /* --- 17. Footer ------------------------------------------ */
@@ -649,6 +653,7 @@ img { display: block; max-width: 100%; }
   .section__body { padding-block: 48px 56px; }
 
   .waitlist { flex-direction: column; }
+  .waitlist__input { flex: none; } /* flex-basis 0 aplastaba el alto en columna */
   .waitlist .btn { width: 100%; justify-content: flex-start; border-top: 0; }
   .closing__inner { padding-block: 64px; }
   .hero__actions .btn { width: 100%; }

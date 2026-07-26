@@ -55,6 +55,16 @@ servidor real (alta → confirmar → entrar → panel → preferencias →
 ventana por CLI → baja), cero errores de consola. En `/privacidad/` ya
 están declarados Brevo y Clouding como encargados.
 
+Misma sesión: auditoría Lighthouse contra el servidor real y arreglos
+hasta **100/100/100/100** (emulación móvil; performance oscila 99–100
+por ruido de CPU, con TBT 0 y CLS 0). Cambios: `--meta` → #6b6767 (el
+gris antiguo daba 2,6:1), botones primarios sobre `--accent-btn`
+#dd2b0f (blanco sobre #ec3013 daba 4,2), texto pequeño sobre rojo en
+negro (puerta y cierre), `.rule-item__num` a 19px, gzip en el servidor,
+y un bug real: `flex: 1` (flex-basis 0) aplastaba a 21px el alto de los
+inputs de email en móvil (landing y /entrar/) — arreglado con
+`flex: none` en columna.
+
 ## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
 
 1. **Rellenar los `[PENDIENTE]` legales** que quedan (responsable, NIF,
@@ -76,6 +86,11 @@ están declarados Brevo y Clouding como encargados.
 - Todo alineado a la izquierda; fotografía siempre en B/N.
 - Texto rojo sobre fondo claro: `--accent-press` (#ae1800), que pasa AA;
   `--accent` (#ec3013) no pasa en texto pequeño.
+- Texto blanco sobre rojo: solo sobre `--accent-btn` (#dd2b0f — botones
+  primarios, franja «abierto», icono de notificación). Sobre `--accent`
+  el texto pequeño va en negro puro, o en grande (≥19px/700 o ≥24px).
+- El gris `--meta` es #6b6767: no volver a aclararlo, era la mayor fuente
+  de fallos AA.
 - El foco `:focus-visible` nunca se elimina.
 - Única sombra permitida: la de la tarjeta de notificación.
 - Los tokens viven en `:root` de `index.html`; `assets/legal.css` y

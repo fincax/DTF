@@ -6,6 +6,7 @@
    ============================================================ */
 
 import { createServer } from 'node:http';
+import { gzipSync } from 'node:zlib';
 import { readFile, stat } from 'node:fs/promises';
 import { join, resolve, normalize, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -286,14 +287,22 @@ async function estatico(req, res, ruta) {
     }
   }
 
-  const datos = await readFile(fichero);
+  let datos = await readFile(fichero);
   const tipo = TIPOS[extname(fichero)] || 'application/octet-stream';
   const cache = codigo !== 200 ? 'no-cache'
     : primero === 'fonts' ? 'public, max-age=31536000, immutable'
     : primero === 'assets' || rel === 'favicon.svg' ? 'public, max-age=3600'
     : 'no-cache';
 
-  res.writeHead(codigo, { 'Content-Type': tipo, 'Cache-Control': cache });
+  const cabeceras = { 'Content-Type': tipo, 'Cache-Control': cache, Vary: 'Accept-Encoding' };
+  /* gzip para lo textual (woff2 ya viene comprimido) */
+  if (/^text\/|json|xml|svg/.test(tipo) && datos.length > 1024 &&
+      /\bgzip\b/.test(req.headers['accept-encoding'] || '')) {
+    datos = gzipSync(datos);
+    cabeceras['Content-Encoding'] = 'gzip';
+  }
+
+  res.writeHead(codigo, cabeceras);
   res.end(req.method === 'HEAD' ? undefined : datos);
 }
 

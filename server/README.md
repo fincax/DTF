@@ -132,6 +132,7 @@ sudo systemctl enable --now dtf
 
 # 5. TLS con Caddy — /etc/caddy/Caddyfile (certificado automático):
 #      dtf.app {
+#        encode zstd gzip
 #        reverse_proxy 127.0.0.1:8787
 #      }
 sudo systemctl reload caddy

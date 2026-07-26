@@ -23,10 +23,11 @@
   --ink:           #201e1d;
   --ink-2:         #444141;
   --ink-3:         #605d5d;
-  --meta:          #9b9797;
+  --meta:          #6b6767;   /* AA (≥4.5) sobre bg, surface y surface-alt */
 
   --accent:        #ec3013;
-  --accent-hover:  #dd2b0f;
+  --accent-btn:    #dd2b0f;   /* fondo de botón: pasa AA con texto blanco */
+  --accent-btn-hover: #c92511;
   --accent-press:  #ae1800;   /* también: texto rojo accesible AA */
   --detail-dark:   #ff9783;
 
@@ -133,8 +134,8 @@ a:hover { color: var(--accent); }
   cursor: pointer;
   transition: background-color .12s linear, color .12s linear;
 }
-.btn--primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-.btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
+.btn--primary { background: var(--accent-btn); border-color: var(--accent-btn); color: #fff; }
+.btn--primary:hover { background: var(--accent-btn-hover); border-color: var(--accent-btn-hover); color: #fff; }
 .btn--primary:active { background: var(--accent-press); border-color: var(--accent-press); }
 
 .btn--secondary { background: transparent; border-color: var(--ink); color: var(--ink); }
@@ -309,6 +310,7 @@ a:hover { color: var(--accent); }
   .fact + .fact { border-left: 0; border-top: var(--rule); }
 
   .inline-form { flex-direction: column; }
+  .inline-form .input { flex: none; } /* flex-basis 0 aplastaba el alto en columna */
   .inline-form .btn { width: 100%; justify-content: flex-start; border-top: 0; }
   .form__actions .btn { width: 100%; justify-content: flex-start; }
 }

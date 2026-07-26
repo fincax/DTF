@@ -53,7 +53,7 @@ DTF. Solo mayores de 18 años.<br>
 </div></body></html>`;
 
 const boton = (url, texto) =>
-  `<p style="margin:24px 0 0;"><a href="${url}" style="display:inline-block;background:#ec3013;color:#ffffff;font-weight:600;font-size:16px;padding:17px 22px;text-decoration:none;">${texto}</a></p>
+  `<p style="margin:24px 0 0;"><a href="${url}" style="display:inline-block;background:#dd2b0f;color:#ffffff;font-weight:600;font-size:16px;padding:17px 22px;text-decoration:none;">${texto}</a></p>
 <p style="margin:14px 0 0;font-size:12.5px;color:#605d5d;">Si el botón no va, copia esto en el navegador:<br>${url}</p>`;
 
 export const plantillas = {

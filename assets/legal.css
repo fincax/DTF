@@ -20,8 +20,9 @@
   --ink:         #201e1d;
   --ink-2:       #444141;
   --ink-3:       #605d5d;
-  --meta:        #9b9797;
+  --meta:        #6b6767;   /* AA (≥4.5) sobre fondos claros */
   --accent:      #ec3013;
+  --accent-btn:  #dd2b0f;   /* fondo con texto blanco AA */
   --accent-press:#ae1800;
   --rule:        2px solid var(--ink);
   --container:   1200px;
@@ -104,8 +105,8 @@ a:hover { color: var(--accent); }
 /* Huecos que debe rellenar el responsable antes de publicar.
    Se marcan en rojo a propósito: si se ve, no está listo. */
 .pending {
-  background: var(--accent);
-  color: var(--bg);
+  background: var(--accent-btn);
+  color: #fff;
   font-weight: 600;
   padding: 1px 6px;
 }
