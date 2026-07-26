@@ -87,6 +87,26 @@ pestañas → reinicio de puerta, cero errores de consola y `tsc` limpio.
 Pendiente de la app en `app/README.md` (backend app, onboarding real,
 deck, push, iconos).
 
+Añadido en sesión 2026-07-26 (misma rama): **backend de la app** en
+`server-app/` — Node + Postgres + WebSockets (`pg` y `ws`; aquí sí hay
+dependencias, lo justifica PRODUCTO.md §5). Implementa acceso por
+enlace mágico con sesión Bearer, onboarding completo (verificación de
+edad guardando solo el resultado, perfil, «qué buscas», vídeo con
+subida directa firmada), webhook de la plataforma de vídeo con filtro
+automático + **cola humana siempre antes de publicar**, ventana/deck/
+like/match, plan con aceptación, chat por WebSocket, barrido de cierre
+(matches sin plan mueren con sus mensajes; con plan, +24 h), reportes,
+bloqueo, expulsión y RGPD (export y borrado real con purga del vídeo).
+Contrato en `server-app/CONTRATO.md`, admin en `server-app/cli.js`.
+Verificado con 47 checks de punta a punta contra Postgres real
+(incluidos WebSocket, cierre de ventana y expulsión).
+
+Misma sesión: **iconos de la app** generados desde `favicon.svg` con la
+construcción de marca real (script en el histórico: mide la caja del
+wordmark con getBBox y rasteriza con Chromium). `icon.png`/`favicon.png`
+mantienen el DTF abajo-izquierda; el adaptativo de Android y el splash
+lo centran (zona segura del recorte circular).
+
 ## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
 
 1. **Rellenar los `[PENDIENTE]` legales** que quedan (responsable, NIF,

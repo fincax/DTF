@@ -1,0 +1,17 @@
+{
+  "name": "dtf-app-server",
+  "private": true,
+  "type": "module",
+  "description": "Backend de la app DTF: cuentas, perfiles, ventana, deck, matches, plan, chat y moderación.",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "pg": "^8.13.1",
+    "ws": "^8.18.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "cli": "node cli.js"
+  }
+}

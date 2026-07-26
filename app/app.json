@@ -10,7 +10,8 @@
     "backgroundColor": "#f3f2f2",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "app.dtf.dtf"
+      "bundleIdentifier": "app.dtf.dtf",
+      "icon": "./assets/images/icon.png"
     },
     "android": {
       "package": "app.dtf.dtf",

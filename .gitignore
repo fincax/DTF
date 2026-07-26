@@ -1,5 +1,7 @@
 # Datos locales del servidor (SQLite, correo en modo log)
 server/data/
+server-app/data/
+server-app/node_modules/
 
 # Secretos de entorno (BREVO_API_KEY, etc.)
 .env
