@@ -23,6 +23,9 @@ assets/app.css           Estilos compartidos de las páginas de cuenta
 server/                  Backend del waitlist: API + estáticos + CLI de
                          administración. Cero dependencias npm (Node ≥
                          22.13: node:sqlite, fetch). Ver server/README.md
+app/                     Esqueleto de la app (Expo + TypeScript, según
+                         PRODUCTO.md): puerta de edad, pestañas y estados
+                         de la ventana contra /api/window. Ver app/README.md
 fonts/                   Archivo variable autoalojada (OFL, subconjunto latino)
 favicon.svg              Cuadrado rojo + "DTF" en trazados de Archivo 800/125%
 robots.txt, sitemap.xml  SEO básico

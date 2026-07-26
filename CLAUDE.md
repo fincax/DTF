@@ -75,6 +75,18 @@ humano SIEMPRE antes de publicar), stack (React Native + Expo; Node +
 Postgres + WebSockets), métricas de la beta y decisiones abiertas del
 responsable. Las promesas de la landing se tratan como contrato.
 
+Misma sesión: **esqueleto de la app** en `app/` (Expo SDK 57 + TS +
+expo-router, plantilla limpiada). Tokens y componentes del sistema en
+`app/src/ui/` (Archivo empaquetada vía @expo-google-fonts — sin
+peticiones a terceros), puerta de edad con AsyncStorage (fail-closed),
+tabs Ventana/Perfil/Ajustes y `src/ventana.tsx` consumiendo el
+`GET /api/window` real (sondeo 60 s + cuenta atrás; CORS abierto solo
+en ese endpoint). Verificado con export web + Chromium contra el
+servidor real: puerta → cerrado → abierto por CLI con cuenta atrás →
+pestañas → reinicio de puerta, cero errores de consola y `tsc` limpio.
+Pendiente de la app en `app/README.md` (backend app, onboarding real,
+deck, push, iconos).
+
 ## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
 
 1. **Rellenar los `[PENDIENTE]` legales** que quedan (responsable, NIF,

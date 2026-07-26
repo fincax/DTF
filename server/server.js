@@ -134,9 +134,11 @@ async function api(req, res, ruta) {
 
   if (metodo !== 'GET' && !origenValido(req)) return json(res, 403, { error: 'origen no permitido' });
 
-  /* GET /api/window — la fuente de verdad de la franja de estado */
+  /* GET /api/window — la fuente de verdad de la franja de estado.
+     CORS abierto: es dato público y lo consulta también la app
+     (la vista web de Expo corre en otro origen durante desarrollo). */
   if (ruta === '/api/window' && metodo === 'GET') {
-    return json(res, 200, ventana(db));
+    return json(res, 200, ventana(db), { 'Access-Control-Allow-Origin': '*' });
   }
 
   /* POST /api/waitlist { email } — alta con doble opt-in.
