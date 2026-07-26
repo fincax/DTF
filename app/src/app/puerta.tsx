@@ -12,7 +12,8 @@ import { c, f, GUTTER } from '../ui/tokens';
 export default function Puerta() {
   async function aceptar() {
     try { await AsyncStorage.setItem('dtf-gate-ok', '1'); } catch {}
-    router.replace('/(tabs)/ventana');
+    /* Al índice, que es quien decide qué toca: sesión, onboarding o ventana. */
+    router.replace('/');
   }
 
   return (

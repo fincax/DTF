@@ -455,6 +455,16 @@ const servidor = createServer(async (req, res) => {
   const ruta = (req.url || '/').split('?')[0];
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'no-referrer');
+
+  /* CORS abierto: la sesión viaja en cabecera Bearer, nunca en cookie,
+     así que no hay nada que un origen ajeno pueda reutilizar. Lo
+     necesitan la vista web de desarrollo y el plan B PWA
+     (PRODUCTO.md §0). */
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'authorization, content-type, x-dtf-secret');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+  if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
+
   try {
     await api(req, res, ruta);
   } catch (e) {

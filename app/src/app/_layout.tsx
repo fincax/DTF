@@ -9,6 +9,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { SesionProvider } from '../sesion';
 import { c } from '../ui/tokens';
 import { VentanaProvider } from '../ventana';
 
@@ -29,14 +30,16 @@ export default function RaizLayout() {
   if (!fuentesListas) return null;
 
   return (
-    <VentanaProvider>
-      <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: c.bg },
-        }}
-      />
-    </VentanaProvider>
+    <SesionProvider>
+      <VentanaProvider>
+        <StatusBar style="dark" />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: c.bg },
+          }}
+        />
+      </VentanaProvider>
+    </SesionProvider>
   );
 }

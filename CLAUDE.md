@@ -107,6 +107,18 @@ wordmark con getBBox y rasteriza con Chromium). `icon.png`/`favicon.png`
 mantienen el DTF abajo-izquierda; el adaptativo de Android y el splash
 lo centran (zona segura del recorte circular).
 
+Misma sesión: **onboarding real en la app**. `src/api.ts` + `sesion.tsx`
+(sesión Bearer en AsyncStorage), `entrar.tsx` (enlace mágico; campo para
+pegar el token mientras no haya deep link firmado), `onboarding.tsx`
+(los 5 pasos **en el orden que dicta `falta[]` del servidor**, con
+validación local para no mandar pasos a medias), deck real con
+like/pass en la pestaña Ventana, y Perfil/Ajustes con datos reales
+(pausar, export, borrado). CORS abierto en el backend de la app (la
+sesión va en cabecera, no en cookie; lo piden la vista web y el plan B
+PWA). Verificado en Chromium contra Postgres + backend reales: puerta →
+enlace → 5 pasos → webhook de vídeo → cola humana → ventana abierta por
+CLI → deck → like, cero errores de consola y `tsc` limpio.
+
 ## Siguiente trabajo (en este orden, según ARQUITECTURA.md)
 
 1. **Rellenar los `[PENDIENTE]` legales** que quedan (responsable, NIF,
