@@ -2,7 +2,17 @@
 
 Web estática de pre-lanzamiento (lista de espera) de DTF, app de citas 18+
 para España. Sin build, sin dependencias: se publica la raíz del repo tal
-cual. Rama de trabajo: `claude/mejor-codigo-efd24j`.
+cual. Rama de trabajo: `claude/donde-lo-dejamos-nt5ab7`.
+
+## Estado (sesión 2026-07-28)
+
+- `assets/tokens.css` — tokens y `@font-face` compartidos. `legal.css` y
+  `perfiles.css` los consumen; ya no se duplican por hoja.
+- `/perfiles/` — página de diseño del perfil de usuario de la app:
+  anatomía anotada, tarjeta de lista, seis estados, tabla de campos y
+  qué datos se guardan. Interna: `noindex`, fuera de `sitemap.xml` y sin
+  enlace desde la navegación. Verificada en Chromium a 390/768/1024/1440
+  sin desbordes ni errores de consola.
 
 ## Estado (sesión 2026-07-25)
 
@@ -25,8 +35,12 @@ validación y éxito del waitlist, menú móvil, cero errores de consola):
 
 1. **Backend del waitlist** (bloqueante): `POST /api/waitlist` con
    validación server-side, rate limit por IP, doble opt-in y
-   almacenamiento de solo email + timestamp + consentimiento. Requiere
-   decidir proveedor (Resend/Loops/Brevo o tabla propia).
+   almacenamiento de solo email + timestamp + consentimiento.
+   Proveedor recomendado: **Brevo** — es europeo, así que no hay
+   transferencia internacional que declarar en `/privacidad/`, y trae
+   doble opt-in y bajas de serie. Falta decidir dónde corre el endpoint
+   (Netlify Functions / Vercel / Cloudflare Workers): el repo es
+   estático puro y hoy no tiene servidor.
 2. **Rellenar los `[PENDIENTE]` legales** con datos reales de la empresa
    y pasar por asesoría. No lanzar el waitlist sin esto.
 3. **`GET /api/window`** → `{ open, closesAt }`. La landing ya consume el
@@ -36,6 +50,20 @@ validación y éxito del waitlist, menú móvil, cero errores de consola):
    ARQUITECTURA.md) — solo cuando el proyecto lo pida; el HTML actual es
    producción.
 5. Foto editorial (`<picture>` AVIF+WebP, siempre `grayscale(1)`).
+6. Decidir `--meta` (ver README): no pasa AA y la usa la landing en texto
+   real. Bloquea el 100 de accesibilidad en Lighthouse.
+
+## Diseño de producto
+
+`/perfiles/` fija el perfil de usuario de la app. Decisiones que ya no
+hay que volver a discutir: el vídeo de 30 s manda, «lo que busco» y «lo
+que no» son campos obligatorios de 140 caracteres en texto libre, la
+acción principal es proponer un plan (no un corazón, no deslizar),
+bloquear y reportar están en pantalla y no en un menú, y el perfil
+caduca con la ventana. Antes de construirlo hay que resolver quién
+verifica la edad, dónde se aloja el vídeo y con qué base jurídica se
+tratan los datos de orientación — categoría especial del art. 9 RGPD,
+que exige consentimiento explícito aparte del alta.
 
 ## Reglas del sistema de diseño (no negociables)
 
@@ -45,8 +73,9 @@ validación y éxito del waitlist, menú móvil, cero errores de consola):
   `--accent` (#ec3013) no pasa en texto pequeño.
 - El foco `:focus-visible` nunca se elimina.
 - Única sombra permitida: la de la tarjeta de notificación.
-- Los tokens viven en `:root` de `index.html`; `assets/legal.css` los
-  duplica para las páginas legales — si cambias uno, cambia los dos.
+- Los tokens viven en dos sitios y solo dos: en línea en el `:root` de
+  `index.html` (página crítica, sin peticiones extra) y en
+  `assets/tokens.css` para todo lo demás. Si cambias uno, cambia los dos.
 
 ## Convenciones de trabajo
 

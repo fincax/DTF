@@ -1,0 +1,309 @@
+/* ============================================================
+   DTF. — Perfiles (página de diseño)
+   Especificación visual del perfil de usuario dentro de la app.
+   Mismo sistema que la landing: cero border-radius, una sola
+   regla de 2px, todo alineado a la izquierda, foto en B/N.
+
+   Los tokens y la fuente vienen de `assets/tokens.css`, que se
+   carga antes que esta hoja en el <head>.
+
+   Nota de contraste: aquí las etiquetas pequeñas usan --ink-3
+   en vez de --meta. --meta (#9b9797) sobre --bg da 2.59:1 y no
+   pasa AA en texto pequeño; --ink-3 da 5.83:1. Ver README.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, figure, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+
+a { color: var(--accent-press); text-decoration: none; }
+a:hover { color: var(--accent); }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.container { max-width: var(--container); margin: 0 auto; padding-inline: var(--gutter); }
+
+.skip {
+  position: absolute; left: -9999px;
+  background: var(--ink); color: var(--bg);
+  padding: 12px 18px; font-weight: 600; z-index: 200;
+}
+.skip:focus { left: 0; top: 0; color: var(--bg); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --- Tipografía del sistema ------------------------------ */
+.logo { font-weight: 800; font-stretch: 125%; letter-spacing: -.02em; line-height: 1; }
+.logo .dot { color: var(--accent); }
+
+.kicker {
+  font-size: 12px; font-weight: 600; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.kicker--red { color: var(--accent-press); }
+
+.h1 { font-weight: 800; font-size: clamp(38px, 5.6vw, 60px); line-height: 1.02; letter-spacing: -.015em; text-wrap: pretty; }
+.h2 { font-weight: 800; font-size: clamp(30px, 3.8vw, 40px); line-height: 1.05; letter-spacing: -.01em; text-wrap: pretty; }
+.h3 { font-weight: 800; font-size: 22px; line-height: 1.15; text-wrap: pretty; }
+
+.lead { font-size: 19px; line-height: 1.6; color: var(--ink-2); max-width: 620px; text-wrap: pretty; }
+.note { font-size: 15px; line-height: 1.5; color: var(--ink-3); max-width: 320px; }
+
+/* --- Cabecera y pie -------------------------------------- */
+.header { background: var(--bg); border-bottom: var(--rule); }
+.header__inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 16px; }
+.header__logo { font-size: 26px; color: var(--ink); }
+.header__logo:hover { color: var(--ink); }
+.header__back { font-size: 14px; font-weight: 600; }
+
+.footer { border-top: var(--rule); }
+.footer__inner {
+  display: flex; justify-content: space-between; align-items: baseline;
+  flex-wrap: wrap; gap: 16px; padding-block: 24px;
+}
+.footer__logo { font-size: 18px; }
+.footer__links { display: flex; flex-wrap: wrap; gap: 24px; }
+.footer__links a { font-size: 13px; color: var(--ink-3); }
+.footer__links a:hover { color: var(--accent); }
+
+/* --- Secciones ------------------------------------------- */
+.section { border-bottom: var(--rule); }
+.section__body { max-width: var(--container); margin: 0 auto; padding: 64px var(--gutter) 72px; }
+.section__head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 24px; margin-bottom: 40px;
+}
+.section__head .kicker { margin-bottom: 14px; }
+
+.intro { padding-block: 72px 80px; }
+.intro .lead { margin-top: 24px; }
+
+/* --- Botones --------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 14px;
+  height: 58px; padding: 0 22px;
+  border: var(--rule-w) solid transparent;
+  font-family: inherit; font-weight: 600; font-size: 16px; line-height: 1;
+  text-align: left; cursor: pointer;
+  transition: background-color .12s linear, color .12s linear;
+}
+.btn--primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
+.btn--secondary { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn--secondary:hover { background: var(--hover-neutral); color: var(--ink); }
+.btn--block { display: flex; width: 100%; }
+.btn--screen { height: 48px; font-size: 15px; padding: 0 16px; }
+.icon { flex: none; }
+
+/* ============================================================
+   MAQUETAS
+   El escenario repite el patrón del especimen de notificación
+   de la landing: fondo --surface, la pantalla alineada a la
+   izquierda. Sin sombra: la única de todo el sistema es la de
+   la tarjeta de notificación.
+   ============================================================ */
+.stage {
+  background: var(--surface);
+  border: var(--rule);
+  padding: 44px 36px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.stage--tight { padding: 28px 24px; }
+
+.screen {
+  width: 100%;
+  max-width: 360px;
+  background: var(--bg);
+  border: var(--rule);
+}
+
+/* Barra de la app */
+.screen__bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 12px 16px; border-bottom: var(--rule);
+}
+.screen__bar .logo { font-size: 17px; }
+.screen__close { font-size: 11px; font-weight: 700; letter-spacing: .14em; color: var(--ink-3); }
+
+/* Franja de caducidad — mismo lenguaje que .status de la landing */
+.screen__strip {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; border-bottom: var(--rule);
+  background: var(--ink); color: var(--bg);
+}
+.screen__strip .dot { width: 8px; height: 8px; flex: none; background: var(--accent-dark); animation: dtfpulse 2.4s infinite; }
+.screen__strip span { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; }
+@keyframes dtfpulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+/* Media: vídeo o foto. SIEMPRE grayscale(1) — regla de marca.
+   El filtro va en el relleno, no en el contenedor, para que
+   el botón de reproducción conserve el rojo del sistema. */
+.screen__media { position: relative; height: 264px; border-bottom: var(--rule); }
+.screen__media--short { height: 160px; }
+.screen__fill {
+  position: absolute; inset: 0;
+  background: var(--surface);
+  filter: grayscale(1);
+  display: flex; align-items: center;
+  padding: 22px;
+  font-size: 12px; line-height: 1.5; color: var(--ink-3);
+}
+.screen__fill img { width: 100%; height: 100%; object-fit: cover; }
+.screen__overlay {
+  position: absolute; inset: auto 14px 14px 14px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;
+}
+.play {
+  width: 46px; height: 46px; flex: none;
+  background: var(--accent); border: 0; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.play:hover { background: var(--accent-hover); }
+.screen__dur {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
+  background: var(--ink); color: var(--bg); padding: 4px 7px;
+}
+
+/* Secciones internas de la pantalla */
+.screen__sec { padding: 16px; border-bottom: var(--rule); }
+.screen__sec:last-child { border-bottom: 0; }
+
+.p-name { font-weight: 800; font-size: 26px; line-height: 1; letter-spacing: -.01em; }
+.p-place {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-3); margin-top: 9px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: var(--rule); padding: 4px 8px;
+  font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+}
+.chip--ink { background: var(--ink); color: var(--bg); }
+.chip--accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.f-label {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.f-text { font-size: 15px; line-height: 1.45; color: var(--ink-2); margin-top: 9px; }
+.f-text--say { font-size: 17px; line-height: 1.38; font-weight: 600; color: var(--ink); }
+
+/* Ficha técnica: dos columnas, ambas alineadas a la izquierda */
+.spec__row {
+  display: grid; grid-template-columns: 104px 1fr; gap: 14px;
+  align-items: baseline; padding: 10px 0; border-top: var(--rule);
+}
+.spec__row:first-child { border-top: 0; padding-top: 0; }
+.spec__k {
+  font-size: 10px; font-weight: 700; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.spec__v { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+
+/* Fotos */
+.shots { display: grid; grid-template-columns: 1fr 1fr; }
+.shot {
+  height: 112px; background: var(--surface); filter: grayscale(1);
+  display: flex; align-items: center; padding: 12px;
+  font-size: 10.5px; line-height: 1.45; color: var(--ink-3);
+}
+.shot + .shot { border-left: var(--rule); }
+
+/* Acciones */
+.screen__actions { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.quiet { display: flex; gap: 20px; margin-top: 6px; }
+.quiet a { font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
+.quiet a:hover { color: var(--accent-press); text-decoration: underline; }
+
+/* --- Anatomía: maqueta + anotaciones numeradas ------------ */
+.anatomy { display: grid; grid-template-columns: 5fr 7fr; align-items: start; }
+.anatomy__notes { padding-left: 48px; }
+.callout { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 14px 0; border-top: var(--rule); }
+.callout:first-child { border-top: 0; padding-top: 0; }
+.callout__num { font-weight: 800; font-size: 15px; color: var(--accent-press); }
+.callout__title { font-weight: 600; font-size: 16px; }
+.callout__text { font-size: 14px; line-height: 1.55; color: var(--ink-3); margin-top: 4px; }
+
+/* --- Rejilla de estados ---------------------------------- */
+.states { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 32px; row-gap: 40px; }
+/* Cada celda es una columna flexible y la maqueta crece: así los
+   pies de foto de una misma fila arrancan todos a la misma altura. */
+.states > * { display: flex; flex-direction: column; }
+.states .mini { flex: 1; }
+.state__caption { margin-top: 16px; padding-top: 14px; border-top: var(--rule); }
+.state__title { font-weight: 600; font-size: 17px; }
+.state__text { font-size: 14px; line-height: 1.55; color: var(--ink-3); margin-top: 5px; }
+
+.mini { border: var(--rule); background: var(--bg); }
+.mini__body { padding: 14px; }
+.mini--dark { background: var(--ink); color: var(--bg); }
+/* Sin rojo sobre tinta: este estado informa, no interrumpe. */
+.mini--dark .f-label { color: var(--border-soft); }
+.mini--dark .f-text { color: var(--bg); }
+.mini--dark .p-name { color: var(--bg); }
+.mini--dark .chip { border-color: var(--bg); color: var(--bg); }
+
+/* --- Tablas de campos ------------------------------------ */
+.fields { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 64px; }
+.field { padding: 18px 0; border-top: var(--rule); }
+.field__name { font-weight: 600; font-size: 17px; }
+.field__rule { font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-press); margin-top: 6px; }
+.field__text { font-size: 14.5px; line-height: 1.55; color: var(--ink-3); margin-top: 6px; }
+
+/* --- Qué se guarda --------------------------------------- */
+.data { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 48px; }
+.data__col { padding-top: 18px; border-top: var(--rule); }
+.data__title { font-weight: 800; font-size: 18px; }
+.data__title--red { color: var(--accent-press); }
+.data__list { margin-top: 14px; }
+.data__list li { font-size: 14.5px; line-height: 1.5; color: var(--ink-3); padding: 8px 0; }
+.data__list li + li { border-top: 2px solid var(--surface); }
+
+/* --- Aviso pendiente ------------------------------------- */
+.callout-box { border: var(--rule); padding: 28px 32px; margin-top: 48px; }
+.callout-box .h3 { margin-bottom: 12px; }
+.callout-box p { font-size: 15px; line-height: 1.6; color: var(--ink-2); max-width: 720px; }
+.callout-box p + p { margin-top: 12px; }
+
+/* --- Responsive ------------------------------------------ */
+@media (max-width: 1024px) {
+  .anatomy { grid-template-columns: 1fr; }
+  .anatomy__notes { padding-left: 0; padding-top: 40px; }
+  .states { grid-template-columns: 1fr 1fr; }
+  .data { grid-template-columns: 1fr; row-gap: 32px; }
+}
+
+@media (max-width: 760px) {
+  .section__body { padding-block: 48px 56px; }
+  .section__head { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .note { max-width: none; }
+  .stage { padding: 24px 20px; }
+  .states, .fields { grid-template-columns: 1fr; }
+  .fields { column-gap: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

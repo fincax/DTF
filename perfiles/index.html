@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DTF. — Perfiles, diseño</title>
+
+<meta name="description" content="Especificación visual del perfil de usuario de DTF: anatomía, estados, campos y qué datos se guardan.">
+<meta name="theme-color" content="#f3f2f2">
+
+<!-- Página de trabajo interna: no es parte del sitio público.
+     No se enlaza desde la navegación ni entra en sitemap.xml. -->
+<meta name="robots" content="noindex,nofollow">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/perfiles.css">
+</head>
+
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="logo header__logo" aria-label="DTF., inicio">DTF<span class="dot">.</span></a>
+    <a class="header__back" href="/">← Volver a la landing</a>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- ============ Intro ============ -->
+  <section class="section">
+    <div class="section__body intro">
+      <p class="kicker kicker--red" style="margin-bottom:20px">Diseño de producto — perfiles</p>
+      <h1 class="h1">El perfil no es un escaparate. Es una declaración de intenciones.</h1>
+      <p class="lead">
+        Todas las apps de citas resuelven el perfil igual: una galería de fotos, unas etiquetas
+        y un corazón. Aquí no encaja. DTF dura unas horas, la gente está dentro a la vez y lo que
+        no se aprovecha caduca — así que el perfil tiene que decir <strong>qué buscas</strong> y
+        <strong>qué no</strong> en los primeros tres segundos, o no sirve para nada.
+      </p>
+      <p class="lead" style="margin-top:20px">
+        Lo que sigue es la especificación visual: anatomía, estados, campos y qué se guarda.
+        Mismo sistema que la web — cero radius, reglas de 2px, todo a la izquierda, foto en B/N.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ Anatomía ============ -->
+  <section class="section" id="anatomia">
+    <div class="section__body">
+      <div class="section__head">
+        <div>
+          <p class="kicker kicker--red">Anatomía</p>
+          <h2 class="h2">El perfil completo</h2>
+        </div>
+        <p class="note">Lo que ve alguien que ha abierto tu perfil dentro de la ventana. 360 px, la medida de trabajo.</p>
+      </div>
+
+      <div class="anatomy">
+        <div class="stage">
+          <article class="screen">
+
+            <div class="screen__bar">
+              <span class="logo">DTF<span class="dot">.</span></span>
+              <span class="screen__close">CERRAR ✕</span>
+            </div>
+
+            <div class="screen__strip">
+              <span class="dot" aria-hidden="true"></span>
+              <span>ESTE PERFIL CADUCA EN 02:14:33</span>
+            </div>
+
+            <div class="screen__media">
+              <!-- Producción: <video muted playsinline poster="…"> con filter: grayscale(1).
+                   Nunca reproducción automática con sonido. -->
+              <div class="screen__fill">Vídeo de 30 s — plano medio, vestida, luz de bar. Sin filtros de belleza: el sistema no los ofrece.</div>
+              <div class="screen__overlay">
+                <button class="play" type="button" aria-label="Reproducir vídeo de presentación">
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="#fff" aria-hidden="true"><polygon points="0,0 16,9 0,18"/></svg>
+                </button>
+                <span class="screen__dur">0:30</span>
+              </div>
+            </div>
+
+            <div class="screen__sec">
+              <h3 class="p-name">Mara, 31</h3>
+              <p class="p-place">Malasaña, Madrid · a 2 km</p>
+              <div class="chips">
+                <span class="chip chip--ink">18+ verificado</span>
+                <span class="chip">En línea ahora</span>
+              </div>
+            </div>
+
+            <div class="screen__sec">
+              <p class="f-label">Lo que busco</p>
+              <p class="f-text f-text--say">Una copa por Malasaña esta noche y ver qué pasa. Si hay química se nota enseguida; si no, tan amigos.</p>
+            </div>
+
+            <div class="screen__sec">
+              <p class="f-label">Lo que no</p>
+              <p class="f-text">Fotos que no he pedido. Que insistas después de un no. Que me llames «princesa».</p>
+            </div>
+
+            <div class="screen__sec spec">
+              <div class="spec__row"><span class="spec__k">Identidad</span><span class="spec__v">Mujer · ella</span></div>
+              <div class="spec__row"><span class="spec__k">Orientación</span><span class="spec__v">Bisexual</span></div>
+              <div class="spec__row"><span class="spec__k">Situación</span><span class="spec__v">Soltera, sin buscar nada serio</span></div>
+              <div class="spec__row"><span class="spec__k">Disponible</span><span class="spec__v">Solo esta ventana</span></div>
+            </div>
+
+            <div class="shots">
+              <div class="shot">Foto 1 — B/N, vestida, cara visible</div>
+              <div class="shot">Foto 2 — B/N, sin cara, con actitud</div>
+            </div>
+
+            <div class="screen__actions" style="border-top:var(--rule)">
+              <button class="btn btn--primary btn--block btn--screen" type="button">
+                Proponer un plan
+                <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/>
+                </svg>
+              </button>
+              <button class="btn btn--secondary btn--block btn--screen" type="button">Pasar</button>
+              <div class="quiet">
+                <a href="#estados">Bloquear</a>
+                <a href="#estados">Reportar</a>
+              </div>
+            </div>
+
+          </article>
+        </div>
+
+        <div class="anatomy__notes">
+          <div class="callout">
+            <span class="callout__num">01</span>
+            <div>
+              <h3 class="callout__title">El vídeo manda</h3>
+              <p class="callout__text">30 segundos, en blanco y negro como toda la fotografía de la marca. Es lo primero y ocupa más que nada. Nunca arranca con sonido, y el sistema no ofrece filtros de belleza: «lo que ves es lo que hay» solo funciona si es verdad.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">02</span>
+            <div>
+              <h3 class="callout__title">Nombre, edad, barrio</h3>
+              <p class="callout__text">Nombre de pila o alias, nunca apellidos. La ubicación es un barrio y una distancia aproximada — jamás un punto en un mapa ni una distancia al metro, que es triangulable.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">03</span>
+            <div>
+              <h3 class="callout__title">18+ verificado, cuadrado</h3>
+              <p class="callout__text">Insignia rectangular con la regla de 2px, sin radius y sin palomita azul. Si no está verificado, el perfil no aparece en la lista: no hay estado intermedio.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">04</span>
+            <div>
+              <h3 class="callout__title">«Lo que busco», con palabras</h3>
+              <p class="callout__text">Campo obligatorio, texto libre, 140 caracteres. Es el campo con más peso tipográfico de la pantalla después del nombre. Sin desplegables ni etiquetas prefabricadas: escribirlo obliga a pensarlo.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">05</span>
+            <div>
+              <h3 class="callout__title">«Lo que no», al mismo nivel</h3>
+              <p class="callout__text">Los límites van en la portada, no enterrados en ajustes. Es la traducción visual de la norma 01: el consentimiento se declara antes, no se negocia después. Un perfil sin este campo no se puede publicar.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">06</span>
+            <div>
+              <h3 class="callout__title">Ficha técnica, no etiquetas</h3>
+              <p class="callout__text">Identidad, pronombres y orientación en una tabla de dos columnas, ambas a la izquierda. Se escriben, no se eligen de una lista cerrada: cabe todo el mundo sin que nadie tenga que marcar «otro».</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">07</span>
+            <div>
+              <h3 class="callout__title">Fotos: tres como mucho, siempre B/N</h3>
+              <p class="callout__text">Van después del texto, no antes. Nunca explícitas — es un compromiso público de la landing. El B/N no es un filtro opcional: se aplica en el sistema y no se puede quitar.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">08</span>
+            <div>
+              <h3 class="callout__title">La acción principal es un plan</h3>
+              <p class="callout__text">No hay corazón, ni «me gusta», ni deslizar. Proponer un plan abre sitio, día y hora. Es más caro que un like a propósito: filtra a quien no iba en serio.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">09</span>
+            <div>
+              <h3 class="callout__title">Bloquear y reportar, a la vista</h3>
+              <p class="callout__text">En la pantalla, no detrás de un menú de tres puntos. «Reportar es un gesto» tiene que ser literalmente un gesto de un toque. Bloquear no pide confirmación ni motivo.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">10</span>
+            <div>
+              <h3 class="callout__title">La cuenta atrás, arriba del todo</h3>
+              <p class="callout__text">Misma franja de estado que la web. El perfil no es un lugar al que volver mañana: cuando cierra la ventana, deja de existir. La urgencia es el producto.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Tarjeta en la lista ============ -->
+  <section class="section" id="lista">
+    <div class="section__body">
+      <div class="section__head">
+        <div>
+          <p class="kicker kicker--red">La lista</p>
+          <h2 class="h2">Antes de abrir el perfil</h2>
+        </div>
+        <p class="note">Dentro de la ventana todo el mundo está a la vez, así que la lista no ordena por «actividad reciente»: todos están activos.</p>
+      </div>
+
+      <div class="anatomy">
+        <div class="stage">
+          <article class="screen">
+            <div class="screen__media screen__media--short">
+              <div class="screen__fill">Fotograma del vídeo — B/N</div>
+              <div class="screen__overlay">
+                <button class="play" type="button" aria-label="Reproducir vídeo de Jon">
+                  <svg width="16" height="18" viewBox="0 0 16 18" fill="#fff" aria-hidden="true"><polygon points="0,0 16,9 0,18"/></svg>
+                </button>
+                <span class="screen__dur">0:30</span>
+              </div>
+            </div>
+            <div class="screen__sec">
+              <h3 class="p-name" style="font-size:21px">Jon, 34</h3>
+              <p class="p-place">Gràcia, Barcelona · a 900 m</p>
+              <p class="f-text f-text--say" style="font-size:15px;margin-top:12px">«Cena tarde y conversación larga. Mañana no trabajo.»</p>
+              <div class="chips">
+                <span class="chip chip--ink">18+ verificado</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="anatomy__notes">
+          <div class="callout">
+            <span class="callout__num">01</span>
+            <div>
+              <h3 class="callout__title">Una frase, no una etiqueta</h3>
+              <p class="callout__text">La tarjeta enseña el fotograma, el nombre, la zona y la primera línea de «lo que busco». Con eso basta para decidir si abres. Nada de porcentajes de compatibilidad ni intereses comunes.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">02</span>
+            <div>
+              <h3 class="callout__title">Sin contadores de vanidad</h3>
+              <p class="callout__text">Ni «visto hace 2 min», ni likes recibidos, ni rachas. La landing lo promete: nada de «alguien ha mirado tu perfil». La lista tampoco lo insinúa.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout__num">03</span>
+            <div>
+              <h3 class="callout__title">Se recorre, no se desliza</h3>
+              <p class="callout__text">Lista vertical con reglas de 2px entre tarjetas, no un mazo de cartas. Deslizar convierte a la gente en baraja; recorrer una lista se parece más a mirar un bar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Estados ============ -->
+  <section class="section" id="estados">
+    <div class="section__body">
+      <div class="section__head">
+        <div>
+          <p class="kicker kicker--red">Variantes y estados</p>
+          <h2 class="h2">Seis situaciones que el diseño tiene que resolver</h2>
+        </div>
+        <p class="note">Cada estado usa el mismo lenguaje: fondo tinta para lo que informa, rojo solo para lo que interrumpe.</p>
+      </div>
+
+      <div class="states">
+
+        <div>
+          <div class="mini">
+            <div class="mini__body">
+              <p class="f-label">Perfil en pareja</p>
+              <h3 class="p-name" style="font-size:20px;margin-top:10px">Mara + Jon</h3>
+              <p class="p-place">31 y 34 · Malasaña</p>
+              <div class="chips">
+                <span class="chip chip--ink">18+ ×2</span>
+                <span class="chip">Verificados por separado</span>
+              </div>
+              <p class="f-text" style="font-size:14px">Buscamos a alguien para una copa los tres. Sin sorpresas: los dos escribimos.</p>
+            </div>
+          </div>
+          <div class="state__caption">
+            <h3 class="state__title">En pareja</h3>
+            <p class="state__text">Dos personas, dos verificaciones independientes y dos vídeos. Ninguna cuenta puede añadir a alguien sin que esa persona lo acepte desde su propio móvil.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="mini mini--dark">
+            <div class="mini__body">
+              <p class="f-label">Modo incógnito</p>
+              <p class="f-text" style="font-size:15px;margin-top:10px">Estás dentro y no te ve nadie. Apareces solo para quien tú abras.</p>
+              <div class="chips">
+                <span class="chip">Incógnito activo</span>
+              </div>
+            </div>
+          </div>
+          <div class="state__caption">
+            <h3 class="state__title">Incógnito</h3>
+            <p class="state__text">Para quien no quiere que le encuentre su cuñado. Fondo tinta, sin rojo: informa, no alarma. Se puede activar y desactivar dentro de la misma ventana.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="mini">
+            <div class="mini__body">
+              <p class="f-label" style="color:var(--accent-press)">Falta el vídeo</p>
+              <p class="f-text" style="font-size:15px;margin-top:10px">Tu perfil sale el último de la lista hasta que grabes los 30 segundos.</p>
+              <div class="chips">
+                <span class="chip chip--accent">Grabar ahora</span>
+              </div>
+            </div>
+          </div>
+          <div class="state__caption">
+            <h3 class="state__title">Sin vídeo</h3>
+            <p class="state__text">No se bloquea el perfil: se penaliza en orden. Es la única palanca del sistema que empuja hacia el vídeo, y se dice sin rodeos en vez de esconderlo en un algoritmo.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="mini">
+            <div class="mini__body">
+              <p class="f-label" style="color:var(--accent-press)">En revisión</p>
+              <p class="f-text" style="font-size:15px;margin-top:10px">Alguien ha reportado este perfil. Lo está mirando una persona del equipo.</p>
+              <div class="chips">
+                <span class="chip">Oculto mientras tanto</span>
+              </div>
+            </div>
+          </div>
+          <div class="state__caption">
+            <h3 class="state__title">Reportado</h3>
+            <p class="state__text">Se oculta durante la revisión, no después. Con ventanas de unas horas, revisar mañana equivale a no revisar. Quien reporta no recibe respuesta pública: el reporte es anónimo.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="mini">
+            <div class="mini__body">
+              <p class="f-label">Ventana cerrada</p>
+              <p class="f-text" style="font-size:15px;margin-top:10px">Este perfil ya no existe. Si coincidís en la próxima ventana, empezáis de cero.</p>
+            </div>
+          </div>
+          <div class="state__caption">
+            <h3 class="state__title">Caducado</h3>
+            <p class="state__text">No hay tarjeta fantasma ni «vuelve pronto»: donde estaba el perfil queda una frase, a pleno contraste. Sin historial, sin «los que te gustaron», sin recuperar la conversación.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="mini">
+            <div class="mini__body">
+              <p class="f-label">Bloqueado por ti</p>
+              <p class="f-text" style="font-size:15px;margin-top:10px">No volveréis a veros. No hemos avisado a nadie.</p>
+              <div class="chips">
+                <span class="chip">Deshacer</span>
+              </div>
+            </div>
+          </div>
+          <div class="state__caption">
+            <h3 class="state__title">Bloqueado</h3>
+            <p class="state__text">Un toque, sin confirmación ni formulario de motivos. La segunda frase es la importante: el bloqueo es silencioso por diseño, y el copy lo promete explícitamente.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Campos ============ -->
+  <section class="section" id="campos">
+    <div class="section__body">
+      <div class="section__head">
+        <div>
+          <p class="kicker kicker--red">Qué se rellena</p>
+          <h2 class="h2">Ocho campos. Cinco obligatorios.</h2>
+        </div>
+        <p class="note">Crear el perfil tiene que caber en una ventana: si lleva más de tres minutos, la gente se lo salta.</p>
+      </div>
+
+      <div class="fields">
+        <div class="field">
+          <h3 class="field__name">Vídeo de 30 s</h3>
+          <p class="field__rule">Recomendado · penaliza en la lista</p>
+          <p class="field__text">Se graba en la app, no se sube de la galería. Un solo intento por ventana para que no se convierta en una producción.</p>
+        </div>
+        <div class="field">
+          <h3 class="field__name">Lo que busco</h3>
+          <p class="field__rule">Obligatorio · 140 caracteres</p>
+          <p class="field__text">Texto libre. Sin sugerencias automáticas ni frases de ejemplo rellenables: el copy de la app pide que lo escribas tú.</p>
+        </div>
+        <div class="field">
+          <h3 class="field__name">Lo que no</h3>
+          <p class="field__rule">Obligatorio · 140 caracteres</p>
+          <p class="field__text">Los límites. Se puede editar en cualquier momento, incluso con una conversación abierta, y el cambio se ve al instante.</p>
+        </div>
+        <div class="field">
+          <h3 class="field__name">Nombre y edad</h3>
+          <p class="field__rule">Obligatorio · edad no editable</p>
+          <p class="field__text">La edad sale de la verificación documental, no se teclea. El nombre puede ser un alias y se puede cambiar entre ventanas.</p>
+        </div>
+        <div class="field">
+          <h3 class="field__name">Identidad y pronombres</h3>
+          <p class="field__rule">Obligatorio · texto libre</p>
+          <p class="field__text">Campo abierto con sugerencias, no lista cerrada. Los pronombres se muestran siempre junto al nombre en la ficha.</p>
+        </div>
+        <div class="field">
+          <h3 class="field__name">Orientación y situación</h3>
+          <p class="field__rule">Opcional · visible si se rellena</p>
+          <p class="field__text">Se puede dejar en blanco sin que el perfil parezca incompleto: no hay barra de «perfil al 60 %».</p>
+        </div>
+        <div class="field">
+          <h3 class="field__name">Fotos</h3>
+          <p class="field__rule">Opcional · máximo 3 · nunca explícitas</p>
+          <p class="field__text">Blanco y negro aplicado por el sistema. Moderación automática antes de publicar y revisión humana si salta.</p>
+        </div>
+        <div class="field">
+          <h3 class="field__name">Zona</h3>
+          <p class="field__rule">Obligatorio · barrio, nunca coordenadas</p>
+          <p class="field__text">Se elige un barrio; la distancia se redondea a la baja y nunca por debajo de 500 m.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Datos ============ -->
+  <section class="section" id="datos">
+    <div class="section__body">
+      <div class="section__head">
+        <div>
+          <p class="kicker kicker--red">Datos</p>
+          <h2 class="h2">Qué se enseña, qué se guarda y qué no existe</h2>
+        </div>
+        <p class="note">Esta columna es la que hay que llevar a la asesoría junto con la política de privacidad.</p>
+      </div>
+
+      <div class="data">
+        <div class="data__col">
+          <h3 class="data__title">Público en la ventana</h3>
+          <ul class="data__list">
+            <li>Nombre o alias y edad</li>
+            <li>Barrio y distancia redondeada</li>
+            <li>Vídeo y fotos, en B/N</li>
+            <li>«Lo que busco» y «lo que no»</li>
+            <li>Identidad, pronombres, orientación</li>
+            <li>Estado de verificación 18+</li>
+          </ul>
+        </div>
+        <div class="data__col">
+          <h3 class="data__title">Guardado, nunca visible</h3>
+          <ul class="data__list">
+            <li>Email y resultado de la verificación</li>
+            <li>Fecha de alta y de último acceso</li>
+            <li>Consentimientos y su fecha</li>
+            <li>Reportes recibidos y emitidos</li>
+            <li>Bloqueos, para que sigan aplicando</li>
+          </ul>
+        </div>
+        <div class="data__col">
+          <h3 class="data__title data__title--red">No se guarda</h3>
+          <ul class="data__list">
+            <li>El documento de identidad — solo el resultado</li>
+            <li>Ubicación exacta ni histórico de ubicaciones</li>
+            <li>Conversaciones tras cerrar la ventana</li>
+            <li>Matches caducados ni «quién te gustó»</li>
+            <li>Contactos del móvil ni agenda</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout-box">
+        <h3 class="h3">Antes de construir esto</h3>
+        <p>
+          Este diseño da por hecho decisiones que todavía no están tomadas y que son
+          <strong>bloqueantes</strong>: quién verifica la edad y con qué proveedor, dónde se
+          almacenan el vídeo y las fotos, y con qué base jurídica se tratan los datos de
+          orientación — que en el RGPD son <strong>categoría especial (art. 9)</strong> y
+          exigen consentimiento explícito, no el consentimiento normal del alta.
+        </p>
+        <p>
+          La política de privacidad actual cubre solo el waitlist. En cuanto exista un perfil
+          hay que rehacerla entera: encargados del tratamiento, plazos, transferencias y el
+          circuito para ejercer derechos. Es el mismo bloque de trabajo que los
+          <strong>[PENDIENTE]</strong> que siguen abiertos en <a href="/privacidad/">privacidad</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="logo footer__logo">DTF<span class="dot">.</span></span>
+    <div class="footer__links">
+      <a href="/">Landing</a>
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/condiciones/">Condiciones</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
