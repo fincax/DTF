@@ -1,0 +1,57 @@
+/* ============================================================
+   DTF. — Tokens compartidos
+   Fuente única para todas las páginas que no son la landing.
+
+   `index.html` mantiene su copia en línea a propósito: es la
+   página crítica del proyecto y no debe pagar una petición
+   extra para pintar. Si cambias un token aquí, cámbialo
+   también allí — son las dos únicas copias que deben existir.
+   ============================================================ */
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url("/fonts/archivo-latin-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* Superficies */
+  --bg:            #f3f2f2;
+  --surface:       #eae9e9;
+  --surface-alt:   #f8f4f4;
+
+  /* Tinta */
+  --ink:           #201e1d;
+  --ink-2:         #444141;
+  --ink-3:         #605d5d;
+  --meta:          #9b9797;
+
+  /* Acento */
+  --accent:        #ec3013;
+  --accent-hover:  #dd2b0f;
+  --accent-press:  #ae1800;   /* también: texto rojo accesible AA */
+  --accent-dark:   #ff563c;   /* acento sobre fondo oscuro */
+  --detail-dark:   #ff9783;
+
+  /* Neutros de interacción */
+  --border-soft:   #d7d3d3;
+  --hover-neutral: #eae7e7;
+  --hover-ink:     #2d2b2b;
+
+  /* Estructura */
+  --rule:          2px solid var(--ink);
+  --rule-w:        2px;
+  --container:     1200px;
+  --gutter:        32px;
+
+  /* Tipografía */
+  --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+@media (max-width: 760px) {
+  :root { --gutter: 20px; }
+}
